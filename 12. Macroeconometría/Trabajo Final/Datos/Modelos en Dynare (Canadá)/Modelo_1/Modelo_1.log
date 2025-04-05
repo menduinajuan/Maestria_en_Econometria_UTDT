@@ -1,0 +1,132 @@
+Starting Dynare (version 6.2).
+Calling Dynare with arguments: none
+Starting preprocessing of the model file ... 
+Found 14 equation(s). 
+Evaluating expressions... 
+Computing static model derivatives (order 1). 
+Normalizing the static model... 
+Finding the optimal block decomposition of the static model... 
+8 block(s) found: 
+  7 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 6 equation(s) 
+                                 and 6 feedback variable(s). 
+Computing dynamic model derivatives (order 1). 
+Normalizing the dynamic model... 
+Finding the optimal block decomposition of the dynamic model... 
+8 block(s) found: 
+  7 recursive block(s) and 1 simultaneous block(s). 
+  the largest simultaneous block has 6 equation(s) 
+                                 and 6 feedback variable(s). 
+Preprocessing completed. 
+Preprocessing time: 0h00m02s.
+Call solver on the full nonlinear problem.
+
+STEADY-STATE RESULTS:
+
+y    		 1.48649
+c    		 1.11695
+k    		 3.39769
+i    		 0.339769
+h    		 1.00742
+A    		 1
+y_h  		 1.47554
+w    		 1.00337
+d    		 0.744218
+tb   		 2.97687
+ca   		 2.9471
+beta 		 0.961538
+eta  		 145.836
+r    		 0.04
+
+MODEL SUMMARY
+
+  Number of variables:         14
+  Number of stochastic shocks: 1
+  Number of state variables:   3
+  Number of jumpers:           5
+  Number of static variables:  7
+
+
+MATRIX OF COVARIANCE OF EXOGENOUS SHOCKS
+Variables           e
+e            0.000166
+
+POLICY AND TRANSITION FUNCTIONS
+                                   y               c               k               i               h               A             y_h               w               d              tb              ca            beta             eta               r
+Constant                    1.486487        1.116950        3.397685        0.339769        1.007418        1.000000        1.475542        1.003368        0.744218        2.976871        2.947102        0.961538      145.836492        0.040000
+A(-1)                       1.172119        0.599955        0.924005        0.924005        0.545956        0.420000        0.363840        0.247411        0.351841      -35.184083      -35.184083       -0.003927      -50.920344               0
+d(-1)                              0       -0.051799        0.037361        0.037361               0               0               0               0        1.025562        1.443752        1.403752        0.003899       50.567621               0
+k(-1)                       0.262839        0.174638        0.448175       -0.451825        0.122426               0        0.081588        0.055480       -0.540026       54.002591       54.002591       -0.003899      -50.567621               0
+e                           2.790760        1.428463        2.200013        2.200013        1.299894        1.000000        0.866286        0.589074        0.837716      -83.771627      -83.771627       -0.009349     -121.238913               0
+
+
+THEORETICAL MOMENTS
+VARIABLE         MEAN  STD. DEV.   VARIANCE
+y              1.4865     0.0453     0.0020
+c              1.1170     0.0255     0.0006
+k              3.3977     0.0444     0.0020
+i              0.3398     0.0301     0.0009
+h              1.0074     0.0211     0.0004
+A              1.0000     0.0142     0.0002
+y_h            1.4755     0.0140     0.0002
+w              1.0034     0.0096     0.0001
+d              0.7442     0.2040     0.0416
+tb             2.9769     2.3565     5.5532
+ca             2.9471     2.3533     5.5381
+beta           0.9615     0.0008     0.0000
+eta          145.8365    10.2113   104.2714
+r              0.0400     0.0000     0.0000
+
+
+
+MATRIX OF CORRELATIONS
+Variables          y        c        k        i        h        A      y_h        w        d       tb       ca     beta      eta
+y             1.0000   0.9160   0.9558   0.6441   1.0000   0.9707   1.0000   1.0000   0.0706   0.1082   0.1081  -0.2104  -0.2104
+c             0.9160   1.0000   0.7964   0.5349   0.9160   0.9029   0.9160   0.9160  -0.3353  -0.0047  -0.0036  -0.5848  -0.5848
+k             0.9558   0.7964   1.0000   0.4786   0.9558   0.8692   0.9558   0.9558   0.2709   0.3638   0.3632  -0.0082  -0.0082
+i             0.6441   0.5349   0.4786   1.0000   0.6441   0.7995   0.6441   0.6441   0.1591  -0.6171  -0.6182  -0.0013  -0.0013
+h             1.0000   0.9160   0.9558   0.6441   1.0000   0.9707   1.0000   1.0000   0.0706   0.1082   0.1081  -0.2104  -0.2104
+A             0.9707   0.9029   0.8692   0.7995   0.9707   1.0000   0.9707   0.9707   0.0271  -0.1321  -0.1323  -0.2376  -0.2376
+y_h           1.0000   0.9160   0.9558   0.6441   1.0000   0.9707   1.0000   1.0000   0.0706   0.1082   0.1081  -0.2104  -0.2104
+w             1.0000   0.9160   0.9558   0.6441   1.0000   0.9707   1.0000   1.0000   0.0706   0.1082   0.1081  -0.2104  -0.2104
+d             0.0706  -0.3353   0.2709   0.1591   0.0706   0.0271   0.0706   0.0706   1.0000   0.2954   0.2923   0.9599   0.9599
+tb            0.1082  -0.0047   0.3638  -0.6171   0.1082  -0.1321   0.1082   0.1082   0.2954   1.0000   1.0000   0.2304   0.2304
+ca            0.1081  -0.0036   0.3632  -0.6182   0.1081  -0.1323   0.1081   0.1081   0.2923   1.0000   1.0000   0.2274   0.2274
+beta         -0.2104  -0.5848  -0.0082  -0.0013  -0.2104  -0.2376  -0.2104  -0.2104   0.9599   0.2304   0.2274   1.0000   1.0000
+eta          -0.2104  -0.5848  -0.0082  -0.0013  -0.2104  -0.2376  -0.2104  -0.2104   0.9599   0.2304   0.2274   1.0000   1.0000
+
+
+
+COEFFICIENTS OF AUTOCORRELATION
+Order           1        2        3        4        5
+y          0.6040   0.3378   0.1775   0.0868   0.0373
+c          0.6835   0.4714   0.3433   0.2699   0.2289
+k          0.7515   0.4758   0.2768   0.1529   0.0812
+i          0.0699  -0.1406  -0.1416  -0.0996  -0.0613
+h          0.6040   0.3378   0.1775   0.0868   0.0373
+A          0.4200   0.1764   0.0741   0.0311   0.0131
+y_h        0.6040   0.3378   0.1775   0.0868   0.0373
+w          0.6040   0.3378   0.1775   0.0868   0.0373
+d          0.9944   0.9846   0.9736   0.9622   0.9509
+tb         0.4354   0.2217   0.1430   0.1149   0.1052
+ca         0.4341   0.2200   0.1411   0.1129   0.1032
+beta       0.9882   0.9765   0.9650   0.9536   0.9424
+eta        0.9882   0.9765   0.9650   0.9536   0.9424
+Relative Standard Deviations in %
+----------------------------------
+VARIABLE        REL. STD. DEV.
+y                3.045
+c                2.282
+k                1.308
+i                8.846
+h                2.093
+A                1.421
+y_h              0.952
+w                0.952
+d               27.408
+tb              79.161
+ca              79.852
+beta             0.082
+eta              7.002
+r                0.000
+Total computing time : 0h00m05s

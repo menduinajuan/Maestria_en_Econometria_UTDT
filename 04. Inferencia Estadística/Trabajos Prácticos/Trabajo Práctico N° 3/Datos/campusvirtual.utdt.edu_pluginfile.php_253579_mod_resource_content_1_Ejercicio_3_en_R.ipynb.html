@@ -1,0 +1,382 @@
+
+<!-- saved from url=(0098)https://campusvirtual.utdt.edu/pluginfile.php/253579/mod_resource/content/1/Ejercicio_3_en_R.ipynb -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Ejercicio 3 en R.ipynb",
+      "provenance": []
+    },
+    "kernelspec": {
+      "name": "ir",
+      "display_name": "R"
+    },
+    "language_info": {
+      "name": "R"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "code",
+      "source": [
+        "install.packages(\"dplyr\")\n",
+        "install.packages(\"moments\")\n",
+        "install.packages('nortest')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "BaOL88IRoJXn",
+        "outputId": "63cc4176-f9a2-4a10-9f1d-4e15182c82e3"
+      },
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "Installing package into ‘/usr/local/lib/R/site-library’\n",
+            "(as ‘lib’ is unspecified)\n",
+            "\n",
+            "Installing package into ‘/usr/local/lib/R/site-library’\n",
+            "(as ‘lib’ is unspecified)\n",
+            "\n",
+            "Installing package into ‘/usr/local/lib/R/site-library’\n",
+            "(as ‘lib’ is unspecified)\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "library(dplyr)\n",
+        "library(moments)\n",
+        "library(nortest)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "H8vGxnr4oXar",
+        "outputId": "502a5113-c1ce-475b-a81f-598a90c2dbc0"
+      },
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "\n",
+            "Attaching package: ‘dplyr’\n",
+            "\n",
+            "\n",
+            "The following objects are masked from ‘package:stats’:\n",
+            "\n",
+            "    filter, lag\n",
+            "\n",
+            "\n",
+            "The following objects are masked from ‘package:base’:\n",
+            "\n",
+            "    intersect, setdiff, setequal, union\n",
+            "\n",
+            "\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 3,
+      "metadata": {
+        "id": "6uMWm9W6kpN4"
+      },
+      "outputs": [],
+      "source": [
+        "dataset &lt;- data.frame(\n",
+        "  \"subject\" = 1:4, \n",
+        "  \"X\" = c(0.30, 0.23, 0.41, 0.53, 0.24, 0.36, 0.38, 0.51), \n",
+        "  \"Y\" = c(0.43, 0.32, 0.58, 0.46, 0.27, 0.41, 0.38, 0.61)\n",
+        ")"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "dataset"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 349
+        },
+        "id": "GYShoqm9mIlW",
+        "outputId": "7ee086a7-1b11-4764-a112-5f5a9813d065"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/html": [
+              "\n",
+              "\n",
+              "\n",
+              "\t\n",
+              "\t\n",
+              "\n",
+              "\n",
+              "\t\n",
+              "\t\n",
+              "\t\n",
+              "\t\n",
+              "\t\n",
+              "\t\n",
+              "\t\n",
+              "\t\n",
+              "\n",
+              "<table class="\&quot;dataframe\&quot;"><caption>A data.frame: 8 × 3</caption><thead><tr><th scope="col">subject</th><th scope="col">X</th><th scope="col">Y</th></tr><tr><th scope="col">&lt;int&gt;</th><th scope="col">&lt;dbl&gt;</th><th scope="col">&lt;dbl&gt;</th></tr></thead><tbody><tr><td>1</td><td>0.30</td><td>0.43</td></tr><tr><td>2</td><td>0.23</td><td>0.32</td></tr><tr><td>3</td><td>0.41</td><td>0.58</td></tr><tr><td>4</td><td>0.53</td><td>0.46</td></tr><tr><td>1</td><td>0.24</td><td>0.27</td></tr><tr><td>2</td><td>0.36</td><td>0.41</td></tr><tr><td>3</td><td>0.38</td><td>0.38</td></tr><tr><td>4</td><td>0.51</td><td>0.61</td></tr></tbody></table>\n"
+            ],
+            "text/markdown": "\nA data.frame: 8 × 3\n\n| subject &lt;int&gt; | X &lt;dbl&gt; | Y &lt;dbl&gt; |\n|---|---|---|\n| 1 | 0.30 | 0.43 |\n| 2 | 0.23 | 0.32 |\n| 3 | 0.41 | 0.58 |\n| 4 | 0.53 | 0.46 |\n| 1 | 0.24 | 0.27 |\n| 2 | 0.36 | 0.41 |\n| 3 | 0.38 | 0.38 |\n| 4 | 0.51 | 0.61 |\n\n",
+            "text/latex": "A data.frame: 8 × 3\n\\begin{tabular}{lll}\n subject &amp; X &amp; Y\\\\\n <int> &amp; <dbl> &amp; <dbl>\\\\\n\\hline\n\t 1 &amp; 0.30 &amp; 0.43\\\\\n\t 2 &amp; 0.23 &amp; 0.32\\\\\n\t 3 &amp; 0.41 &amp; 0.58\\\\\n\t 4 &amp; 0.53 &amp; 0.46\\\\\n\t 1 &amp; 0.24 &amp; 0.27\\\\\n\t 2 &amp; 0.36 &amp; 0.41\\\\\n\t 3 &amp; 0.38 &amp; 0.38\\\\\n\t 4 &amp; 0.51 &amp; 0.61\\\\\n\\end{tabular}\n",
+            "text/plain": [
+              "  subject X    Y   \n",
+              "1 1       0.30 0.43\n",
+              "2 2       0.23 0.32\n",
+              "3 3       0.41 0.58\n",
+              "4 4       0.53 0.46\n",
+              "5 1       0.24 0.27\n",
+              "6 2       0.36 0.41\n",
+              "7 3       0.38 0.38\n",
+              "8 4       0.51 0.61"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "dataset['d'] &lt;- dataset['X'] - dataset['Y']"
+      ],
+      "metadata": {
+        "id": "U87Dca_fmS7Y"
+      },
+      "execution_count": 5,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "hist(dataset$d)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 437
+        },
+        "id": "JaPNvppWmpcS",
+        "outputId": "1b397a35-2996-4a15-dbd1-7f6974f825e0"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "Plot with title “Histogram of dataset$d”"
+            ],
+            "image/png": "iVBORw0KGgoAAAANSUhEUgAAA0gAAANICAMAAADKOT/pAAADAFBMVEUAAAABAQECAgIDAwME\nBAQFBQUGBgYHBwcICAgJCQkKCgoLCwsMDAwNDQ0ODg4PDw8QEBARERESEhITExMUFBQVFRUW\nFhYXFxcYGBgZGRkaGhobGxscHBwdHR0eHh4fHx8gICAhISEiIiIjIyMkJCQlJSUmJiYnJyco\nKCgpKSkqKiorKyssLCwtLS0uLi4vLy8wMDAxMTEyMjIzMzM0NDQ1NTU2NjY3Nzc4ODg5OTk6\nOjo7Ozs8PDw9PT0+Pj4/Pz9AQEBBQUFCQkJDQ0NERERFRUVGRkZHR0dISEhJSUlKSkpLS0tM\nTExNTU1OTk5PT09QUFBRUVFSUlJTU1NUVFRVVVVWVlZXV1dYWFhZWVlaWlpbW1tcXFxdXV1e\nXl5fX19gYGBhYWFiYmJjY2NkZGRlZWVmZmZnZ2doaGhpaWlqampra2tsbGxtbW1ubm5vb29w\ncHBxcXFycnJzc3N0dHR1dXV2dnZ3d3d4eHh5eXl6enp7e3t8fHx9fX1+fn5/f3+AgICBgYGC\ngoKDg4OEhISFhYWGhoaHh4eIiIiJiYmKioqLi4uMjIyNjY2Ojo6Pj4+QkJCRkZGSkpKTk5OU\nlJSVlZWWlpaXl5eYmJiZmZmampqbm5ucnJydnZ2enp6fn5+goKChoaGioqKjo6OkpKSlpaWm\npqanp6eoqKipqamqqqqrq6usrKytra2urq6vr6+wsLCxsbGysrKzs7O0tLS1tbW2tra3t7e4\nuLi5ubm6urq7u7u8vLy9vb2+vr6/v7/AwMDBwcHCwsLDw8PExMTFxcXGxsbHx8fIyMjJycnK\nysrLy8vMzMzNzc3Ozs7Pz8/Q0NDR0dHS0tLT09PU1NTV1dXW1tbX19fY2NjZ2dna2trb29vc\n3Nzd3d3e3t7f39/g4ODh4eHi4uLj4+Pk5OTl5eXm5ubn5+fo6Ojp6enq6urr6+vs7Ozt7e3u\n7u7v7+/w8PDx8fHy8vLz8/P09PT19fX29vb39/f4+Pj5+fn6+vr7+/v8/Pz9/f3+/v7////i\nsF19AAAACXBIWXMAABJ0AAASdAHeZh94AAAgAElEQVR4nO3dCZwcZZ3/8WeSmUwmIQnRJISQ\ng0vRFSUEEFwOUZArnOKqQTEhUQIJEHbBBRY5lWSFPwLLJbiIgoscAuIqsMQsWePKcsnucrga\n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\nMUIKEyGJEVKYCEmMkMJESGKEFCZCEiOkMBGSGCGFiZDECClMhCRGSGEiJDFCChMhiRFSmAhJ\njJDCREhihBQmQhIjpDARkhghhYmQxAgpTIQkRkhhIiQxQgoTIYkRUpgISYyQwkRIYoQUJkIS\nI6QwEZIYIYWJkMQIKUyEJEZIYSIkMUIKEyGJEVKYCEmMkMJESGKEFCZCEiOkMBGSGCGFiZDE\nCClMhCRGSGEiJDFCChMhiRFSmAhJjJDCREhihBQmQhIjpDARkhghhYmQxAgpTIQkRkhhIiQx\nQgoTIYkRUpgISYyQwkRIYoQUJkISI6QwEZIYIYWJkMQIKUyEJEZIYSIkMUIKEyGJEVKYCEmM\nkMJESGKEFCZCEiOkMBGSGCGFiZDECClMhCRGSGEiJDFCChMhiRFSmAhJjJDCREhihBQmQhIj\npDARkhghhYmQxAgpTIQkRkhhIiQxQgoTIYkRUpgISYyQwkRIYoQUJkISI6QwEZIYIYWJkMQI\nKUyEJEZIYSIkMUIKEyGJEVKYCEmMkMJESGKEFCZCEiOkMBGSGCGFiZDECClMhCRGSGEiJDFC\nChMhiRFSmAhJjJDCREhihBQmQhIjpDARkhghhYmQxAgpTIQkRkhhIiQxQgoTIYkRUpgISYyQ\nwkRIYoQUJkISI6QwEZIYIYWJkMQIKUyEJEZIYSIkMUIKEyGJEVKYCEmMkMJESGKEFCZCEiOk\nMBGSGCGFiZDECClMhCRGSGEiJDFCChMhiRFSmAhJjJDCREhihBQmQhIjpDARkhghhYmQxAgp\nTIQkRkhhIiQxQgoTIYkRUpgISYyQwkRIYoQUJkISI6QwEZIYIYWJkMQIKUyEJEZIYSIkMUIK\nEyGJEVKYCEmMkMJESGKEFCZCEiOkMBGSGCGFiZDECClMhCRGSGEiJDFCChMhiRFSmAhJjJDC\nREhihBQmQhIjpDARkhghhYmQxAgpTIQkRkhhIiQxQgoTIYkRUpgISYyQwkRIYoQUJkISI6Qw\nEZIYIYWJkMQIKUyEJEZIYSIkMUIKEyGJEVKYCEmMkMJESGKEFCZCEiOkMBGSGCGFiZDECClM\nhCRGSGEiJDFCChMhiRFSmAhJjJDCREhihBQmQhIjpDARkhghhYmQxAgpTIQkRkhhIiQxQgoT\nIYkRUpgISYyQwkRIYoQUJkISI6QwEZIYIYWJkMQIKUyEJEZIYSIkMUIKEyGJEVKYCEmMkMKU\n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"
+          },
+          "metadata": {
+            "image/png": {
+              "width": 420,
+              "height": 420
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Tests de Normalidad sobre D"
+      ],
+      "metadata": {
+        "id": "YrOcT1WenZkb"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "shapiro.test(dataset$d)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 104
+        },
+        "id": "8LNH7hidnKk6",
+        "outputId": "dc468f92-0f5c-4421-8ff0-b1dc66bc7cd5"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "\n",
+              "\tShapiro-Wilk normality test\n",
+              "\n",
+              "data:  dataset$d\n",
+              "W = 0.98513, p-value = 0.9837\n"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "agostino.test(dataset$d)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 121
+        },
+        "id": "UrOU-O4lnO8G",
+        "outputId": "e6e825ea-16df-4b93-efd9-b6f51c579957"
+      },
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "\n",
+              "\tD'Agostino skewness test\n",
+              "\n",
+              "data:  dataset$d\n",
+              "skew = 0.33560, z = 0.56468, p-value = 0.5723\n",
+              "alternative hypothesis: data have a skewness\n"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "ad.test(dataset$d)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 104
+        },
+        "id": "xBnmEhCGpNGU",
+        "outputId": "81089f79-ae85-4a05-9565-e884ab388e52"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "\n",
+              "\tAnderson-Darling normality test\n",
+              "\n",
+              "data:  dataset$d\n",
+              "A = 0.1355, p-value = 0.9592\n"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Función generadora de intervalos de confianza"
+      ],
+      "metadata": {
+        "id": "olNsvmDefVxQ"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "get_ci = function(sample, significance_level){\n",
+        "  mean = mean(sample)\n",
+        "  sd = sd(sample)\n",
+        "  n = length(sample)\n",
+        "  critical_value = qt(p=significance_level/2, df=n-1, lower.tail=FALSE)\n",
+        "  lb = mean-critical_value*sd/(sqrt(n))\n",
+        "  ub =  mean+critical_value*sd/(sqrt(n))\n",
+        "  return(list(lb,ub))\n",
+        "}"
+      ],
+      "metadata": {
+        "id": "ppCYhoaRfSyV"
+      },
+      "execution_count": 30,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "get_ci(dataset$d, 0.05)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 80
+        },
+        "id": "dlDfHR7agnd7",
+        "outputId": "620b22a6-ce8c-4de5-dbea-7327eebf6f72"
+      },
+      "execution_count": 31,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/html": [
+              "<ol>\n",
+              "\t<li>-0.126443304897426</li>\n",
+              "\t<li>0.00144330489742583</li>\n",
+              "</ol>\n"
+            ],
+            "text/markdown": "1. -0.126443304897426\n2. 0.00144330489742583\n\n\n",
+            "text/latex": "\\begin{enumerate}\n\\item -0.126443304897426\n\\item 0.00144330489742583\n\\end{enumerate}\n",
+            "text/plain": [
+              "[[1]]\n",
+              "[1] -0.1264433\n",
+              "\n",
+              "[[2]]\n",
+              "[1] 0.001443305\n"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        ""
+      ],
+      "metadata": {
+        "id": "x1DT0uX4g1Jm"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}</dbl></dbl></int></body></html>

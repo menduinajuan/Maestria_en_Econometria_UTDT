@@ -1,0 +1,66 @@
+function [g1, T_order, T] = dynamic_g1(y, x, params, steady_state, sparse_rowval, sparse_colval, sparse_colptr, T_order, T)
+if nargin < 9
+    T_order = -1;
+    T = NaN(14, 1);
+end
+[T_order, T] = Modelo_2.sparse.dynamic_g1_tt(y, x, params, steady_state, T_order, T);
+g1_v = NaN(53, 1);
+g1_v(1)=(-((-(T(6)*(-params(5))))/((1+params(5)*(y(16)-y(3)))*(1+params(5)*(y(16)-y(3))))));
+g1_v(2)=params(5)/2*(-(2*(y(16)-y(3))));
+g1_v(3)=(-(T(10)*y(19)*getPowerDeriv(y(3),params(1),1)));
+g1_v(4)=(-(1-params(2)));
+g1_v(5)=(-(100*(-(params(5)/2*(-(2*(y(16)-y(3))))))));
+g1_v(6)=(-(params(6)*1/y(6)));
+g1_v(7)=1+y(26);
+g1_v(8)=(-(params(11)*exp(y(9)-params(10))));
+g1_v(9)=y(26);
+g1_v(10)=(-((1-params(1))*1/y(18)));
+g1_v(11)=(-1);
+g1_v(12)=1;
+g1_v(13)=(-100);
+g1_v(14)=(-(1/y(18)));
+g1_v(15)=(-((1-params(1))*1/y(18)));
+g1_v(16)=T(11);
+g1_v(17)=T(11);
+g1_v(18)=1;
+g1_v(19)=100;
+g1_v(20)=(-(((1+params(5)*(y(16)-y(3)))*T(4)*(params(1)*(-y(27))/(y(16)*y(16))-params(5))-params(5)*T(6))/((1+params(5)*(y(16)-y(3)))*(1+params(5)*(y(16)-y(3))))));
+g1_v(21)=params(5)/2*2*(y(16)-y(3));
+g1_v(22)=1;
+g1_v(23)=(-(100*(-(params(5)/2*2*(y(16)-y(3))))));
+g1_v(24)=1;
+g1_v(25)=(-1);
+g1_v(26)=100;
+g1_v(27)=getPowerDeriv(y(18),params(4)-1,1)-(1-params(1))*(-y(14))/(y(18)*y(18));
+g1_v(28)=T(13);
+g1_v(29)=T(13);
+g1_v(30)=(-(T(9)*getPowerDeriv(y(18),1-params(1),1)));
+g1_v(31)=(-((-y(14))/(y(18)*y(18))));
+g1_v(32)=(-((1-params(1))*(-y(14))/(y(18)*y(18))));
+g1_v(33)=(-(T(8)*T(10)));
+g1_v(34)=1/y(19);
+g1_v(35)=1;
+g1_v(36)=1;
+g1_v(37)=(-1);
+g1_v(38)=1;
+g1_v(39)=(-1);
+g1_v(40)=1;
+g1_v(41)=1;
+g1_v(42)=(-1);
+g1_v(43)=(-T(4));
+g1_v(44)=y(9);
+g1_v(45)=y(9);
+g1_v(46)=1;
+g1_v(47)=(-(T(4)*params(1)*1/y(16)/(1+params(5)*(y(16)-y(3)))));
+g1_v(48)=(-(T(5)*params(9)*T(12)/(1+params(5)*(y(16)-y(3)))));
+g1_v(49)=(-((1+y(26))*params(9)*T(12)));
+g1_v(50)=(-(T(4)*params(5)/(1+params(5)*(y(16)-y(3)))));
+g1_v(51)=(-(T(5)*T(14)/(1+params(5)*(y(16)-y(3)))));
+g1_v(52)=(-((1+y(26))*T(14)));
+g1_v(53)=(-1);
+if ~isoctave && matlab_ver_less_than('9.8')
+    sparse_rowval = double(sparse_rowval);
+    sparse_colval = double(sparse_colval);
+end
+g1 = sparse(sparse_rowval, sparse_colval, g1_v, 13, 40);
+end

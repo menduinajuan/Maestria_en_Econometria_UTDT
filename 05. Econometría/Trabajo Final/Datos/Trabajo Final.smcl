@@ -1,0 +1,640 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}G:\Mi unidad\JM\Facultad de Ciencias Económicas (FCE)\Maestría en Econometría\5. Econometría\Trabajo Final\Datos\Trabajo Final.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}17 Mar 2024, 17:00:13
+{txt}
+{com}. 
+. 
+. global seed=2205
+{txt}
+{com}. set seed $seed
+{txt}
+{com}. 
+. 
+. *##############################################################################*
+. ***************** 1. INFERENCIA EN EL MODELO DE REGRESIÓN LINEAL ***************
+. *##############################################################################*
+. 
+. 
+. global alpha=3
+{txt}
+{com}. global beta=1
+{txt}
+{com}. global reps=2000
+{txt}
+{com}. 
+. 
+. ********************************************************************************
+.                                                         * EJERCICIOS 1-7 *
+. ********************************************************************************
+. 
+. 
+. *PROGRAMA*
+. 
+. program define mcc, rclass
+{txt}  1{com}. 
+.         drop _all
+{txt}  2{com}.         set obs $n
+{txt}  3{com}. 
+.         *Variables*
+.         generate x=rnormal(2,1)
+{txt}  4{com}.         if (${c -(}model{c )-}==1)                                generate u=runiform(-6,6)
+{txt}  5{com}.         if (${c -(}model{c )-}==2)                                generate u=sqrt(2542/5)*(rbeta(2,5)-2/7)
+{txt}  6{com}.         if (${c -(}model{c )-}==3)                                generate u=rt(2.1818)
+{txt}  7{com}.         if (${c -(}model{c )-}==4)                                generate u=sqrt(75)*(rbinomial(1,0.8)-0.8)
+{txt}  8{com}.         if (${c -(}model{c )-}==5 | ${c -(}model{c )-}==6)  generate u=rnormal(0,12)
+{txt}  9{com}.         if (${c -(}model{c )-}==6)                                replace u=500 in 1
+{txt} 10{com}.         generate y=${c -(}alpha{c )-}+${c -(}beta{c )-}*x+u
+{txt} 11{com}. 
+.         *Estimación*
+.         regress y x
+{txt} 12{com}. 
+.         *Resultados*
+.         test x=1
+{txt} 13{com}.         return scalar pvalue=r(p)
+{txt} 14{com}. 
+. end
+{txt}
+{com}. 
+. *SIMULACIONES*
+. 
+. local samples="10 20 100 200 500 1000 5000 10000"
+{txt}
+{com}. local cols: word count `samples'
+{txt}
+{com}. 
+. matrix define   mcc = J(6,`cols',.)
+{txt}
+{com}. matrix rownames mcc = "model_1" "model_2" "model_3" "model_4" "model_5" "model_6"
+{txt}
+{com}. matrix colnames mcc = "n_10" "n_20" "n_100" "n_200" "n_500" "n_1000" "n_5000" "n_10000"
+{txt}
+{com}. 
+. local i=1
+{txt}
+{com}. quietly forvalues model=1(1)6 {c -(}
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}1{txt} con tamaño de muestra n={res}10
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}1{txt} con tamaño de muestra n={res}20
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}1{txt} con tamaño de muestra n={res}100
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}1{txt} con tamaño de muestra n={res}200
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}1{txt} con tamaño de muestra n={res}500
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}1{txt} con tamaño de muestra n={res}1000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}1{txt} con tamaño de muestra n={res}5000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}1{txt} con tamaño de muestra n={res}10000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}2{txt} con tamaño de muestra n={res}10
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}2{txt} con tamaño de muestra n={res}20
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}2{txt} con tamaño de muestra n={res}100
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}2{txt} con tamaño de muestra n={res}200
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}2{txt} con tamaño de muestra n={res}500
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}2{txt} con tamaño de muestra n={res}1000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}2{txt} con tamaño de muestra n={res}5000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}2{txt} con tamaño de muestra n={res}10000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}3{txt} con tamaño de muestra n={res}10
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}3{txt} con tamaño de muestra n={res}20
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}3{txt} con tamaño de muestra n={res}100
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}3{txt} con tamaño de muestra n={res}200
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}3{txt} con tamaño de muestra n={res}500
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}3{txt} con tamaño de muestra n={res}1000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}3{txt} con tamaño de muestra n={res}5000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}3{txt} con tamaño de muestra n={res}10000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}4{txt} con tamaño de muestra n={res}10
+{err}xxxxxxxxxxxxxxxxxxxxxxxxx{txt}Simulación mediante estimación por MCC de modelo (1) {res}4{txt} con tamaño de muestra n={res}20
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}4{txt} con tamaño de muestra n={res}100
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}4{txt} con tamaño de muestra n={res}200
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}4{txt} con tamaño de muestra n={res}500
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}4{txt} con tamaño de muestra n={res}1000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}4{txt} con tamaño de muestra n={res}5000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}4{txt} con tamaño de muestra n={res}10000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}5{txt} con tamaño de muestra n={res}10
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}5{txt} con tamaño de muestra n={res}20
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}5{txt} con tamaño de muestra n={res}100
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}5{txt} con tamaño de muestra n={res}200
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}5{txt} con tamaño de muestra n={res}500
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}5{txt} con tamaño de muestra n={res}1000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}5{txt} con tamaño de muestra n={res}5000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}5{txt} con tamaño de muestra n={res}10000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}6{txt} con tamaño de muestra n={res}10
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}6{txt} con tamaño de muestra n={res}20
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}6{txt} con tamaño de muestra n={res}100
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}6{txt} con tamaño de muestra n={res}200
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}6{txt} con tamaño de muestra n={res}500
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}6{txt} con tamaño de muestra n={res}1000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}6{txt} con tamaño de muestra n={res}5000
+{txt}Simulación mediante estimación por MCC de modelo (1) {res}6{txt} con tamaño de muestra n={res}10000
+{txt}
+{com}. 
+. *RESULTADOS FINALES*
+. 
+. drop _all
+{txt}
+{com}. matrix list mcc
+{res}
+{txt}mcc[6,8]
+            n_10     n_20    n_100    n_200    n_500   n_1000   n_5000  n_10000
+model_1 {res}    5.25     4.45      4.3     4.15      5.4      5.4     5.45     4.55
+{txt}model_2 {res}     5.1      5.2     3.95     4.95     5.65     5.45        5     5.55
+{txt}model_3 {res}     4.8     4.75     4.75     5.55     5.15        5     4.35      4.7
+{txt}model_4 {res}     4.9     4.55      4.4     5.05      4.9      5.3     5.25     5.45
+{txt}model_5 {res}     5.1     4.15     4.55      4.4     5.25      4.1     5.35     4.15
+{txt}model_6 {res}     4.9     4.55     5.05     4.35     5.05     4.65      5.4     4.35
+{reset}
+{com}. matrix define mcc_t=mcc'
+{txt}
+{com}. svmat mcc_t, names(col)
+{txt}number of observations will be reset to 8
+Press any key to continue, or Break to abort
+{p}
+Number of observations ({bf:_N}) was 0,
+now 8.
+{p_end}
+
+{com}. 
+. local i=1
+{txt}
+{com}. generate n=.
+{txt}(8 missing values generated)
+
+{com}. foreach n of local samples {c -(}
+{txt}  2{com}.         replace n=`n' in `i'
+{txt}  3{com}.         local i=`i'+1
+{txt}  4{com}. {c )-}
+{txt}(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+
+{com}. 
+. graph twoway (line model_1 n) (line model_2 n) (line model_3 n) (line model_4 n) (line model_5 n) (line model_6 n),     ///
+>                          ytitle("") xtitle("Tamaño de muestra (n)")    yline(5, lcolor(black)) ///
+>                          legend(label(1 "Modelo 1") label(2 "Modelo 2") label(3 "Modelo 3") label(4 "Modelo 4") label(5 "Modelo 5") label(6 "Modelo 6"))
+{res}{txt}
+{com}. 
+. order n, first
+{txt}
+{com}. save "mcc_matriz", replace
+{txt}{p 0 4 2}
+file {bf}
+mcc_matriz.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. *##############################################################################*
+. ******************** 2. PROPIEDADES DE MUESTRA FINITA DE FGLS ******************
+. *##############################################################################*
+. 
+. 
+. global beta0=-3
+{txt}
+{com}. global beta1=0.8
+{txt}
+{com}. global reps=5000
+{txt}
+{com}. matrix define omega=(4,0,0,0,0\0,9,0,0,0\0,0,16,0,0\0,0,0,25,0\0,0,0,0,36)
+{txt}
+{com}. 
+. 
+. ********************************************************************************
+.                                                         * EJERCICIOS 1-6 *
+. ********************************************************************************
+. 
+. 
+. *PROGRAMA*
+. 
+. program define fgls_gls, rclass
+{txt}  1{com}. 
+.         drop _all
+{txt}  2{com}.         set obs $n
+{txt}  3{com}. 
+.         *Variables*
+.         local n1=${c -(}n{c )-}/5
+{txt}  4{com}.         local n11=`n1'+1
+{txt}  5{com}.         local n2=2*`n1'
+{txt}  6{com}.         local n21=`n2'+1
+{txt}  7{com}.         local n3=3*`n1'
+{txt}  8{com}.         local n31=`n3'+1
+{txt}  9{com}.         local n4=4*`n1'
+{txt} 10{com}.         local n41=`n4'+1
+{txt} 11{com}.         local n5=5*`n1'
+{txt} 12{com}.         generate c=1
+{txt} 13{com}.         generate x=runiform(1,50)
+{txt} 14{com}.         generate u=.
+{txt} 15{com}.         replace u=rnormal(0,omega[1,1]) in         1/`n1'
+{txt} 16{com}.         replace u=rnormal(0,omega[2,2]) in `n11'/`n2'
+{txt} 17{com}.         replace u=rnormal(0,omega[3,3]) in `n21'/`n3'
+{txt} 18{com}.         replace u=rnormal(0,omega[4,4]) in `n31'/`n4'
+{txt} 19{com}.         replace u=rnormal(0,omega[5,5]) in `n41'/`n5'
+{txt} 20{com}.         generate y=${c -(}beta0{c )-}+${c -(}beta1{c )-}*x+u
+{txt} 21{com}. 
+.         *FGLS (matriz omega desconocida y, por lo tanto, estimada)*
+. 
+.                 *Estimación de matriz omega (se hace imponiendo una estructura particular, en donde la diagonal principal de la matriz corresponde a los residuos de la estimación por MCC elevados al cuadrado -es decir, se supone heterocedasticidad- y, por fuera de esta diagonal, todos los elementos son ceros -es decir, se supone ausencia de correlación serial-)*
+.                 regress y x c, noconstant
+{txt} 22{com}.                 predict r, residuals
+{txt} 23{com}.                 generate r2=r^2
+{txt} 24{com}.                 matrix define omega_est=J(${c -(}n{c )-},${c -(}n{c )-},0)
+{txt} 25{com}.                 forvalues i=1(1)$n {c -(}
+{txt} 26{com}.                         matrix omega_est [`i',`i']=r2[`i']
+{txt} 27{com}.                 {c )-}
+{txt} 28{com}. 
+.                 *Matrices P y P^-1*
+.                 matrix define P=cholesky(omega_est)
+{txt} 29{com}.                 matrix define P_inv=inv(P)
+{txt} 30{com}.                 matrix list P
+{txt} 31{com}.                 matrix list P_inv
+{txt} 32{com}. 
+.                 *Variables transformadas*
+.                 foreach var of varlist y x c {c -(}
+{txt} 33{com}.                         mkmat `var', matrix(`var')
+{txt} 34{com}.                         matrix define p`var'=P_inv*`var'
+{txt} 35{com}.                         matrix list p`var'
+{txt} 36{com}.                         svmat p`var'
+{txt} 37{com}.                 {c )-}
+{txt} 38{com}.                 rename (py1 px1 pc1) (py_fgls px_fgls pc_fgls)
+{txt} 39{com}. 
+.                 *Estimación*
+.                 regress py_fgls px_fgls pc_fgls, noconstant
+{txt} 40{com}. 
+.                 *Resultados*
+.                 test px_fgls=0.8
+{txt} 41{com}.                 return scalar pvalue_b1_08_fgls=r(p)
+{txt} 42{com}.                 test px_fgls=0
+{txt} 43{com}.                 return scalar pvalue_b1_00_fgls=r(p)
+{txt} 44{com}.                 test px_fgls=0.4
+{txt} 45{com}.                 return scalar pvalue_b1_04_fgls=r(p)
+{txt} 46{com}.                 return scalar beta0_fgls=e(b)[1,2]
+{txt} 47{com}.                 return scalar beta1_fgls=e(b)[1,1]
+{txt} 48{com}. 
+.         *GLS (matriz omega conocida)*
+. 
+.         if (${c -(}n{c )-}==5) {c -(}
+{txt} 49{com}. 
+.                 *Matrices P y P^-1*
+.                 matrix define P=cholesky(omega)
+{txt} 50{com}.                 matrix define P_inv=inv(P)
+{txt} 51{com}.                 matrix list P
+{txt} 52{com}.                 matrix list P_inv
+{txt} 53{com}. 
+.                 *Variables transformadas*
+.                 foreach var of varlist y x c {c -(}
+{txt} 54{com}.                         matrix define p`var'=P_inv*`var'
+{txt} 55{com}.                         matrix list p`var'
+{txt} 56{com}.                         svmat p`var'
+{txt} 57{com}.                 {c )-}
+{txt} 58{com}.                 rename (py1 px1 pc1) (py_gls px_gls pc_gls)
+{txt} 59{com}. 
+.                 *Estimación*
+.                 regress py_gls px_gls pc_gls, noconstant
+{txt} 60{com}. 
+.                 *Resultados*
+.                 test px_gls=0.8
+{txt} 61{com}.                 return scalar pvalue_b1_08_gls=r(p)
+{txt} 62{com}.                 test px_gls=0
+{txt} 63{com}.                 return scalar pvalue_b1_00_gls=r(p)
+{txt} 64{com}.                 test px_gls=0.4
+{txt} 65{com}.                 return scalar pvalue_b1_04_gls=r(p)
+{txt} 66{com}.                 return scalar beta0_gls=e(b)[1,2]
+{txt} 67{com}.                 return scalar beta1_gls=e(b)[1,1]
+{txt} 68{com}. 
+.         {c )-}
+{txt} 69{com}. 
+. end
+{txt}
+{com}. 
+. *SIMULACIONES*
+. 
+. local samples="5 10 30 100 200 500"
+{txt}
+{com}. local cols: word count `samples'
+{txt}
+{com}. 
+. matrix define   fgls_gls = J(10,`cols'+1,.)
+{txt}
+{com}. matrix rownames fgls_gls = "tam_test_1" "tam_test_5" "poder_test_b1_00" "poder_test_b1_04" "media_b0" "mediana_b0" "de_b0" "media_b1" "mediana_b1" "de_b1"
+{txt}
+{com}. matrix colnames fgls_gls = "5N_5_fgls" "5N_5_gls" "5N_10_fgls" "5N_30_fgls" "5N_100_fgls" "5N_200_fgls" "5N_500_fgls"
+{txt}
+{com}. 
+. local i=1
+{txt}
+{com}. quietly foreach n of local samples {c -(}
+{txt}Simulación mediante estimación por FGLS-GLS de modelo (2) con tamaño de muestra 5N={res}5
+{txt}Simulación mediante estimación por FGLS-GLS de modelo (2) con tamaño de muestra 5N={res}10
+{txt}Simulación mediante estimación por FGLS-GLS de modelo (2) con tamaño de muestra 5N={res}30
+{txt}Simulación mediante estimación por FGLS-GLS de modelo (2) con tamaño de muestra 5N={res}100
+{txt}Simulación mediante estimación por FGLS-GLS de modelo (2) con tamaño de muestra 5N={res}200
+{txt}Simulación mediante estimación por FGLS-GLS de modelo (2) con tamaño de muestra 5N={res}500
+{txt}
+{com}. 
+. *RESULTADOS FINALES*
+. 
+. drop _all
+{txt}
+{com}. matrix list fgls_gls
+{res}
+{txt}fgls_gls[10,7]
+                5N_5_fgls     5N_5_gls   5N_10_fgls   5N_30_fgls  5N_100_fgls  5N_200_fgls  5N_500_fgls
+  tam_test_1 {res}       11.14           .9        33.06        67.76        85.58         90.4        93.84
+{txt}  tam_test_5 {res}       25.76         3.66        47.04        75.96        89.34        92.78        95.42
+{txt}poder_tes~00 {res}       45.12        15.66        82.64        99.48          100          100          100
+{txt}poder_tes~04 {res}        31.6         6.32         61.4        91.36         99.5          100          100
+{txt}    media_b0 {res}  -2.7114341   -2.6882905   -2.9687445   -3.1098922   -3.0628564      -3.0524   -3.0028249
+{txt}  mediana_b0 {res}  -3.0968595   -2.8423771   -2.8721864   -3.1056669   -2.9915589   -3.0453837   -3.0236795
+{txt}       de_b0 {res}   27.341682    20.961836    14.404257    7.7495081    4.3042986    3.0822572    1.9566627
+{txt}    media_b1 {res}   .78520989    .78327716    .79660413    .80248452    .80095932    .80123007    .80083357
+{txt}  mediana_b1 {res}   .78804693    .79176334    .79176787    .79995945    .80053502    .80171373    .80146357
+{txt}       de_b1 {res}   .95955986    .73397636    .49923376    .26379673    .14823026    .10502662    .06754757
+{reset}
+{com}. matrix define fgls_gls_t=fgls_gls'
+{txt}
+{com}. svmat fgls_gls_t, names(col)
+{txt}number of observations will be reset to 7
+Press any key to continue, or Break to abort
+{p}
+Number of observations ({bf:_N}) was 0,
+now 7.
+{p_end}
+
+{com}. 
+. local i=1
+{txt}
+{com}. generate n=.
+{txt}(7 missing values generated)
+
+{com}. foreach n of local samples {c -(}
+{txt}  2{com}.         replace n=`n' in `i'
+{txt}  3{com}.         local i=`i'+1
+{txt}  4{com}. {c )-}
+{txt}(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+
+{com}. 
+. order n, first
+{txt}
+{com}. save "fgls_gls_matriz", replace
+{txt}{p 0 4 2}
+(file {bf}
+fgls_gls_matriz.dta{rm}
+not found)
+{p_end}
+{p 0 4 2}
+file {bf}
+fgls_gls_matriz.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. *##############################################################################*
+. * 3. CORRECCIÓN DE LA MATRIZ DE VARIANZAS Y COVARIANZAS EN PRESENCIA DE HETEROCEDASTICIDAD, WHITE (1980) *
+. *##############################################################################*
+. 
+. 
+. global b0=1
+{txt}
+{com}. global b1=1
+{txt}
+{com}. global b2=1
+{txt}
+{com}. global reps=5000
+{txt}
+{com}. 
+. 
+. ********************************************************************************
+.                                                         * EJERCICIOS (a)-(g) *
+. ********************************************************************************
+. 
+. 
+. *PROGRAMA*
+. 
+. program define mcc_white, rclass
+{txt}  1{com}. 
+.         drop _all
+{txt}  2{com}.         set obs $n
+{txt}  3{com}. 
+.         *Variables*
+.         local n=${c -(}n{c )-}/20
+{txt}  4{com}.         local j=0
+{txt}  5{com}.         generate c=1
+{txt}  6{com}.         generate x1=.
+{txt}  7{com}.         forvalues i=1(1)`n' {c -(}
+{txt}  8{com}.                 local j1 =`j'+1
+{txt}  9{com}.                 local j2 =`j'+2
+{txt} 10{com}.                 local j19=`j'+19
+{txt} 11{com}.                 local j20=`j'+20
+{txt} 12{com}.                 replace x1=-1 in `j1'
+{txt} 13{com}.                 replace x1=runiform(-1,1) in `j2'/`j19'
+{txt} 14{com}.                 replace x1=1 in `j20'
+{txt} 15{com}.                 local j=`j'+20
+{txt} 16{com}.         {c )-}
+{txt} 17{com}.         generate x2=rnormal()
+{txt} 18{com}.         generate u1=rnormal()
+{txt} 19{com}.         generate u2=rt(5)
+{txt} 20{com}.         generate v=exp(0.25*x1+0.25*x2)
+{txt} 21{com}.         generate e_d1=sqrt(v)*u1
+{txt} 22{com}.         generate e_d2=sqrt(v)*u2
+{txt} 23{com}.         generate y1=${c -(}b0{c )-}+${c -(}b1{c )-}*x1+${c -(}b2{c )-}*x2+e_d1
+{txt} 24{com}.         generate y2=${c -(}b0{c )-}+${c -(}b1{c )-}*x1+${c -(}b2{c )-}*x2+e_d2
+{txt} 25{com}. 
+.         *MCC-WHITE_R2 (construyendo la estimación de la matriz de White con una matriz diagonal con los residuos de la estimación por MCC elevados al cuadrado)*
+. 
+.                 *DISEÑO 1*
+. 
+.                         *Estimación*
+.                         regress y1 x1 x2 c, noconstant
+{txt} 26{com}.                         matrix define var_est_d1=e(V)
+{txt} 27{com}.                         matrix list var_est_d1
+{txt} 28{com}. 
+.                         *Matriz de White*
+.                         predict r_d1, residuals
+{txt} 29{com}.                         generate r2_d1=r_d1^2
+{txt} 30{com}.                         matrix define omega_d1_r2=J(${c -(}n{c )-},${c -(}n{c )-},0)
+{txt} 31{com}.                         forvalues i=1(1)$n {c -(}
+{txt} 32{com}.                                 matrix omega_d1_r2 [`i',`i']=r2_d1[`i']
+{txt} 33{com}.                         {c )-}
+{txt} 34{com}.                         mkmat x1 x2 c, matrix(X)
+{txt} 35{com}.                         matrix define var_white_d1_r2=inv(X'*X)*X'*omega_d1_r2*X*inv(X'*X)
+{txt} 36{com}.                         matrix list var_white_d1_r2
+{txt} 37{com}. 
+.                         *Resultados*
+.                         return scalar sesgo_rel_b0_d1_r2=(var_est_d1[3,3]-var_white_d1_r2[3,3])/var_white_d1_r2[3,3]
+{txt} 38{com}.                         return scalar sesgo_rel_b1_d1_r2=(var_est_d1[1,1]-var_white_d1_r2[1,1])/var_white_d1_r2[1,1]
+{txt} 39{com}.                         return scalar sesgo_rel_b2_d1_r2=(var_est_d1[2,2]-var_white_d1_r2[2,2])/var_white_d1_r2[2,2]
+{txt} 40{com}. 
+.                 *DISEÑO 2*
+. 
+.                         *Estimación*
+.                         regress y2 x1 x2 c, noconstant
+{txt} 41{com}.                         matrix define var_est_d2=e(V)
+{txt} 42{com}.                         matrix list var_est_d2
+{txt} 43{com}. 
+.                         *Matriz de White*
+.                         predict r_d2, residuals
+{txt} 44{com}.                         generate r2_d2=r_d2^2
+{txt} 45{com}.                         matrix define omega_d2_r2=J(${c -(}n{c )-},${c -(}n{c )-},0)
+{txt} 46{com}.                         forvalues i=1(1)$n {c -(}
+{txt} 47{com}.                                 matrix omega_d2_r2 [`i',`i']=r2_d2[`i']
+{txt} 48{com}.                         {c )-}
+{txt} 49{com}.                         matrix define var_white_d2_r2=inv(X'*X)*X'*omega_d2_r2*X*inv(X'*X)
+{txt} 50{com}.                         matrix list var_white_d2_r2
+{txt} 51{com}. 
+.                         *Resultados*
+.                         return scalar sesgo_rel_b0_d2_r2=(var_est_d2[3,3]-var_white_d2_r2[3,3])/var_white_d2_r2[3,3]
+{txt} 52{com}.                         return scalar sesgo_rel_b1_d2_r2=(var_est_d2[1,1]-var_white_d2_r2[1,1])/var_white_d2_r2[1,1]
+{txt} 53{com}.                         return scalar sesgo_rel_b2_d2_r2=(var_est_d2[2,2]-var_white_d2_r2[2,2])/var_white_d2_r2[2,2]
+{txt} 54{com}. 
+.         *MCC-WHITE_E2 (construyendo la estimación de la matriz de White con una matriz diagonal con los errores verdaderos elevados al cuadrado)*
+. 
+.                 *DISEÑO 1*
+. 
+.                         *Matriz de White*
+.                         generate e2_d1=e_d1^2
+{txt} 55{com}.                         matrix define omega_d1_e2=J(${c -(}n{c )-},${c -(}n{c )-},0)
+{txt} 56{com}.                         forvalues i=1(1)$n {c -(}
+{txt} 57{com}.                                 matrix omega_d1_e2 [`i',`i']=e2_d1[`i']
+{txt} 58{com}.                         {c )-}
+{txt} 59{com}.                         mkmat x1 x2 c, matrix(X)
+{txt} 60{com}.                         matrix define var_white_d1_e2=inv(X'*X)*X'*omega_d1_e2*X*inv(X'*X)
+{txt} 61{com}.                         matrix list var_white_d1_e2
+{txt} 62{com}. 
+.                         *Resultados*
+.                         return scalar sesgo_rel_b0_d1_e2=(var_est_d1[3,3]-var_white_d1_e2[3,3])/var_white_d1_e2[3,3]
+{txt} 63{com}.                         return scalar sesgo_rel_b1_d1_e2=(var_est_d1[1,1]-var_white_d1_e2[1,1])/var_white_d1_e2[1,1]
+{txt} 64{com}.                         return scalar sesgo_rel_b2_d1_e2=(var_est_d1[2,2]-var_white_d1_e2[2,2])/var_white_d1_e2[2,2]
+{txt} 65{com}. 
+.                 *DISEÑO 2*
+. 
+.                         *Matriz de White*
+.                         generate e2_d2=e_d2^2
+{txt} 66{com}.                         matrix define omega_d2_e2=J(${c -(}n{c )-},${c -(}n{c )-},0)
+{txt} 67{com}.                         forvalues i=1(1)$n {c -(}
+{txt} 68{com}.                                 matrix omega_d2_e2 [`i',`i']=e2_d2[`i']
+{txt} 69{com}.                         {c )-}
+{txt} 70{com}.                         matrix define var_white_d2_e2=inv(X'*X)*X'*omega_d2_e2*X*inv(X'*X)
+{txt} 71{com}.                         matrix list var_white_d2_e2
+{txt} 72{com}. 
+.                         *Resultados*
+.                         return scalar sesgo_rel_b0_d2_e2=(var_est_d2[3,3]-var_white_d2_e2[3,3])/var_white_d2_e2[3,3]
+{txt} 73{com}.                         return scalar sesgo_rel_b1_d2_e2=(var_est_d2[1,1]-var_white_d2_e2[1,1])/var_white_d2_e2[1,1]
+{txt} 74{com}.                         return scalar sesgo_rel_b2_d2_e2=(var_est_d2[2,2]-var_white_d2_e2[2,2])/var_white_d2_e2[2,2]
+{txt} 75{com}. 
+. end
+{txt}
+{com}. 
+. *SIMULACIONES*
+. 
+. local samples="20 60 100 200 400 600"
+{txt}
+{com}. local cols: word count `samples'
+{txt}
+{com}. 
+. matrix define   mcc_white = J(16,`cols',.)
+{txt}
+{com}. matrix rownames mcc_white = "sesgo_rel_b0_d1_r2" "sesgo_rel_b1_d1_r2" "sesgo_rel_b2_d1_r2" "sesgo_rel_tot_d1_r2" ///
+>                                                         "sesgo_rel_b0_d2_r2" "sesgo_rel_b1_d2_r2" "sesgo_rel_b2_d2_r2" "sesgo_rel_tot_d2_r2" ///
+>                                                         "sesgo_rel_b0_d1_e2" "sesgo_rel_b1_d1_e2" "sesgo_rel_b2_d1_e2" "sesgo_rel_tot_d1_e2" ///
+>                                                         "sesgo_rel_b0_d2_e2" "sesgo_rel_b1_d2_e2" "sesgo_rel_b2_d2_e2" "sesgo_rel_tot_d2_e2"
+{txt}
+{com}. matrix colnames mcc_white = "n_20" "n_60" "n_100" "n_200" "n_400" "n_600"
+{txt}
+{com}. 
+. local i=1
+{txt}
+{com}. quietly foreach n of local samples {c -(}
+{txt}Simulación mediante MCC-White de modelo (3) con tamaño de muestra n={res}20
+{txt}Simulación mediante MCC-White de modelo (3) con tamaño de muestra n={res}60
+{txt}Simulación mediante MCC-White de modelo (3) con tamaño de muestra n={res}100
+{txt}Simulación mediante MCC-White de modelo (3) con tamaño de muestra n={res}200
+{txt}Simulación mediante MCC-White de modelo (3) con tamaño de muestra n={res}400
+{txt}Simulación mediante MCC-White de modelo (3) con tamaño de muestra n={res}600
+{txt}
+{com}. 
+. *RESULTADOS FINALES*
+. 
+. drop _all
+{txt}
+{com}. matrix list mcc_white
+{res}
+{txt}mcc_white[16,6]
+                    n_20        n_60       n_100       n_200       n_400       n_600
+sesgo_rel_~2 {res}  .23034984   .06025905   .03610806   .01693947   .00870313   .00551768
+{txt}sesgo_rel_~2 {res}  .36504873   .09649283   .05239972   .01908597   .00574677   .00027366
+{txt}sesgo_rel_~2 {res}  .50773099   .11324631   .04319585  -.00117977  -.02703793  -.03606916
+{txt}sesgo_rel_~2 {res}  1.1031296   .26999819   .13170363    .0372052   .04148783    .0418605
+{txt}sesgo_rel_~2 {res}  .25188844    .0642141    .0364623   .01859992    .0088628   .00577142
+{txt}sesgo_rel_~2 {res}  .43102122   .12637529   .07349449   .03201225   .01262843   .00524612
+{txt}sesgo_rel_~2 {res}  .57308878   .16888924   .08356208   .01980243   -.0085917  -.02626787
+{txt}sesgo_rel_~2 {res}  1.2559984   .35947864   .19351887    .0704146   .03008293   .03728541
+{txt}sesgo_rel_~2 {res}  .03216483   .00778472   .00411066   .00120023   .00094207   .00040372
+{txt}sesgo_rel_~2 {res}  .09937928   .02916126   .01222979  -.00048518  -.00404129   -.0060623
+{txt}sesgo_rel_~2 {res}  .16408277   .02463095  -.00864809  -.02837335  -.03996361  -.04485073
+{txt}sesgo_rel_~2 {res}  .29562689   .06157693   .02498854   .03005876   .04494697   .05131675
+{txt}sesgo_rel_~2 {res}  .06322696    .0102027   .00411241   .00266907   .00125367   .00073033
+{txt}sesgo_rel_~2 {res}   .1908131    .0588957   .03370237   .01206319   .00317809  -.00108146
+{txt}sesgo_rel_~2 {res}  .28502322   .08504964   .03181598  -.00544807   -.0215365  -.03420955
+{txt}sesgo_rel_~2 {res}  .53906328   .15414804   .06963075   .02018033   .02596826   .03602135
+{reset}
+{com}. matrix define mcc_white_t=mcc_white'
+{txt}
+{com}. svmat mcc_white_t, names(col)
+{txt}number of observations will be reset to 6
+Press any key to continue, or Break to abort
+{p}
+Number of observations ({bf:_N}) was 0,
+now 6.
+{p_end}
+
+{com}. 
+. local i=1
+{txt}
+{com}. generate n=.
+{txt}(6 missing values generated)
+
+{com}. foreach n of local samples {c -(}
+{txt}  2{com}.         replace n=`n' in `i'
+{txt}  3{com}.         local i=`i'+1
+{txt}  4{com}. {c )-}
+{txt}(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+
+{com}. 
+. graph twoway (line sesgo_rel_tot_d1_r2 n) (line sesgo_rel_tot_d2_r2 n) ///
+>                          (line sesgo_rel_tot_d1_e2 n) (line sesgo_rel_tot_d2_e2 n),     ///
+>                          ytitle("Sesgo relativo total") xtitle("Tamaño de muestra (n)") ///
+>                          legend(label(1 "Diseño 1 - White r2") label(2 "Diseño 2 - White r2") label(3 "Diseño 1 - White e2") label(4 "Diseño 2 - White e2"))
+{res}{txt}
+{com}. 
+. order n, first
+{txt}
+{com}. save "mcc_white_matriz", replace
+{txt}{p 0 4 2}
+file {bf}
+mcc_white_matriz.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}G:\Mi unidad\JM\Facultad de Ciencias Económicas (FCE)\Maestría en Econometría\5. Econometría\Trabajo Final\Datos\Trabajo Final.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}17 Mar 2024, 21:01:33
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}

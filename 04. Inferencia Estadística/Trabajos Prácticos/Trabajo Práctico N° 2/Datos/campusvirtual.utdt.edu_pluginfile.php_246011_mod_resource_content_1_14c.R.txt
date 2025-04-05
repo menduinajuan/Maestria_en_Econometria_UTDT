@@ -1,0 +1,31 @@
+setwd("~/MAECO/Infe 2020/Guia 2") # Poner directorio donde quieran guardar resultados.
+set.seed(1234) # Para replicar resultados
+
+# Creo funcion score sumando términos a lo largo de las diferentes x
+score = function(xVec, theta){ 
+  result = 0
+  for (x in xVec){
+    result = result + ((x - theta) / (1 + (theta-x)^(2)))
+  }
+  return(result)
+}
+
+thetaRange = seq(from = -10, to = 10, by = 0.05) # Referencia para graficar.
+
+results.df <- data.frame(sampleSize= c(10, 100, 1000), thetamle = NA) # Matriz para guardar resultados
+
+for (i in 1:3){
+  n = results.df[i, "sampleSize"] # Defino tamaño de muestra
+  sample = rcauchy(n, location = 1) # Creo muestra Cauchy(theta = 1)
+  
+  filename = paste("n", n, ".png") 
+  png(filename, w = 546, h = 430) # Para guardar imagen
+  plot(thetaRange, score(sample, thetaRange), type = 'line', col = "blue") # Grafico score vs. theta para la muestra
+  title(main = paste("Función Score. n = ", n))
+  abline(h=0) # Linea en score = 0
+  dev.off()
+
+  results.df[i, "thetamle"] = uniroot(score, c(-10,10), xVec = sample)[1] # Estimo theta MLE por Newton Raphson
+} 
+
+results.df

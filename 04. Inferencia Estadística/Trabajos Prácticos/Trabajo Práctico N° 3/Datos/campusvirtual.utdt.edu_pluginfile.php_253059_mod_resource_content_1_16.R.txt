@@ -1,0 +1,97 @@
+setwd("~/UTDT/Infe 2021/Guía 3")
+set.seed(123)
+# install.packages("MASS")
+# install.packages("car")
+library(MASS)
+library(car)
+
+############
+# Inciso 0 #
+############
+# Parametros
+sampleSize = 20 # Tamaño de muestra
+mu0 = c(1, 2) # Vector de medias
+sigma0 = matrix(c(1, 0.25, 0.25, 1), ncol = 2) # Matriz de varianza-covarianzas
+alpha = 0.95
+adj = 2*(sampleSize-1)/(sampleSize*(sampleSize-2))
+
+# Generamos muestra
+sample = mvrnorm(n = sampleSize, mu = mu0, Sigma = sigma0)
+muHat = colMeans(sample)
+
+# Graficamos
+png("inciso0.png")
+plot(sample, xlim = c(-2,4), ylim = c(-2,5), xlab = "x", ylab = "y")
+ellipse(center = mu0, shape = sigma0, radius = sqrt(qchisq(alpha, 2)/sampleSize), col = "red", center.cex = 1, lty = 2) # Elipse sigma conocido
+ellipse(center = mu0, shape = cov(sample), radius = sqrt(qf(alpha, 2, sampleSize - 2)*adj), col = "blue", center.pch = 'FALSE' , lty = 2) # Elipse sigma desconocido
+points(muHat[1], muHat[2], pch = 'x', cex = 1, col = 'purple') # Media estimada.
+dev.off()
+
+############
+# Inciso 1 #
+############
+# Parametros fijos
+mu0 = c(1, 2) # Vector de medias
+sigma0 = matrix(c(1, 0.25, 0.25, 1), ncol = 2) # Matriz de varianza-covarianzas
+alpha = 0.95
+
+# Repetir para tamaños muestrales de 100, 500, 1000
+for (sampleSize in c(100, 500, 1000)){
+  adj = 2*(sampleSize-1)/(sampleSize*(sampleSize-2))
+  sample = mvrnorm(n = sampleSize, mu = mu0, Sigma = sigma0)
+  muHat = colMeans(sample)
+  filename = paste(sampleSize,".png", sep = "")
+  png(filename)
+  plot(sample, xlim = c(-2,4), ylim = c(-2,5), xlab = "x", ylab = "y")
+  ellipse(center = mu0, shape = sigma0, radius = sqrt(qchisq(alpha, 2)/sampleSize), col = "red", center.cex = 1, lty = 2) # Elipse sigma conocido
+  ellipse(center = mu0, shape = cov(sample), radius = sqrt(qf(alpha, 2, sampleSize - 2)*adj), col = "blue", center.pch = 'FALSE' , lty = 2) # Elipse sigma desconocido
+  points(muHat[1], muHat[2], pch = 'x', cex = 1, col = 'purple') # Media estimada.
+  dev.off()
+}
+
+############
+# Inciso 2 #
+############
+# Parametros fijos
+sampleSize = 100 # Tamaño de muestra
+adj = 2*(sampleSize-1)/(sampleSize*(sampleSize-2))
+mu0 = c(1, 2) # Vector de medias
+sigma0 = matrix(c(1, 0.25, 0.25, 1), ncol = 2) # Matriz de varianza-covarianzas
+
+# Repetir para valores de alpha iguales a 0.05, 0.01, 0.001.
+sampleSize = 100
+for (alphaEnt in c(95, 99, 99.9)){
+  alpha = alphaEnt/100
+  sample = mvrnorm(n = sampleSize, mu = mu0, Sigma = sigma0)
+  muHat = colMeans(sample)
+  filename = paste("alpha",alphaEnt,".png", sep = "")
+  png(filename)
+  plot(sample, xlim = c(-2,4), ylim = c(-2,5), xlab = "x", ylab = "y")
+  ellipse(center = mu0, shape = sigma0, radius = sqrt(qchisq(alpha, 2)/sampleSize), col = "red", center.cex = 1, lty = 2) # Elipse sigma conocido
+  ellipse(center = mu0, shape = cov(sample), radius = sqrt(qf(alpha, 2, sampleSize - 2)*adj), col = "blue", center.pch = 'FALSE' , lty = 2) # Elipse sigma desconocido
+  points(muHat[1], muHat[2], pch = 'x', cex = 1, col = 'purple') # Media estimada.
+  dev.off()
+}
+
+############
+# Inciso 3 #
+############
+# Parametros fijos
+sampleSize = 100 # Tamaño de muestra
+mu0 = c(1, 2) # Vector de medias
+alpha = 0.95
+
+# Repetir para diferentes varianzas
+sampleSize = 100
+for (sigmaval in c(2, 5, 10)){
+  sigma0 = matrix(c(sigmaval, 0.25*sigmaval, 0.25*sigmaval, sigmaval), ncol = 2) # Matriz de varianza-covarianzas
+  sample = mvrnorm(n = sampleSize, mu = mu0, Sigma = sigma0)
+  muHat = colMeans(sample)
+  filename = paste("sigma", sigmaval,".png", sep = "")
+  png(filename)
+  plot(sample, xlim = c(-2,4), ylim = c(-2,5), xlab = "x", ylab = "y")
+  ellipse(center = mu0, shape = sigma0, radius = sqrt(qchisq(.95, 2)/sampleSize), col = "red", center.cex = 1, lty = 2) # Elipse sigma conocido
+  ellipse(center = mu0, shape = cov(sample), radius = sqrt(qf(.95, 2, sampleSize - 2)*adj), col = "blue", center.pch = 'FALSE' , lty = 2) # Elipse sigma desconocido
+  points(muHat[1], muHat[2], pch = 'x', cex = 1, col = 'purple') # Media estimada.
+  dev.off()
+}

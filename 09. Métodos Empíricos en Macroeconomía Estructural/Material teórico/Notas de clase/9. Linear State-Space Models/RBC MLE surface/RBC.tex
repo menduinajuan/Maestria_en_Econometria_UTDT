@@ -1,0 +1,377 @@
+%2multibyte Version: 5.50.0.2953 CodePage: 1252
+
+\documentclass[12pt]{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{geophysics}
+\usepackage[singlespacing]{setspace}
+
+\setcounter{MaxMatrixCols}{10}
+%TCIDATA{OutputFilter=LATEX.DLL}
+%TCIDATA{Version=5.50.0.2953}
+%TCIDATA{Codepage=1252}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{BibliographyScheme=Manual}
+%TCIDATA{Created=Thursday, April 07, 2005 15:20:17}
+%TCIDATA{LastRevised=Wednesday, August 17, 2016 13:12:43}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="DocumentShell" CONTENT="Articles\SW\Geophysics Journal">}
+%TCIDATA{Language=American English}
+%TCIDATA{CSTFile=LaTeX article (bright).cst}
+
+\newdimen\dummy
+\dummy=\oddsidemargin
+\addtolength{\dummy}{72pt}
+\marginparwidth=.675\dummy
+\marginparsep=.1\dummy
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.7in}
+\input{tcilatex}
+\begin{document}
+
+
+%TCIMACRO{\TeXButton{onehalfspacing}{\onehalfspacing}}%
+%BeginExpansion
+\onehalfspacing%
+%EndExpansion
+
+\section{Basic \textbf{RBC\ Model}}
+
+\begin{equation*}
+\max \mathbb{E}_{0}\sum_{t=0}^{\infty }\beta ^{t}\left[ \log c_{t}-\eta 
+\frac{l_{t}^{1+\frac{1}{\nu }}}{1+\frac{1}{\nu }}\right] 
+\end{equation*}%
+subject to%
+\begin{equation*}
+c_{t}+k_{t+1}=A_{t}k_{t}^{\alpha }l_{t}^{1-\alpha }+\left( 1-\delta \right)
+k_{t}
+\end{equation*}%
+given initial conditions $A_{0},k_{0}$, and a law of motion for the
+technology process that we specify below. 
+
+Let $\lambda _{t}$ denote the multiplier on the constraint and write the
+Lagrangian%
+\begin{equation*}
+L=\mathbb{E}_{0}\sum_{t=0}^{\infty }\beta ^{t}\left[ \log c_{t}-\eta \frac{%
+l_{t}^{1+\frac{1}{\nu }}}{1+\frac{1}{\nu }}\right] -\lambda _{t}\left[
+c_{t}+k_{t+1}-A_{t}k_{t}^{\alpha }l_{t}^{1-\alpha }-\left( 1-\delta \right)
+k_{t}\right]
+\end{equation*}%
+The first order conditions with respect to $c_{t},$ $l_{t},$ and $k_{t+1}$
+are, respectively,%
+\begin{equation*}
+\frac{1}{c_{t}}=\lambda _{t}
+\end{equation*}%
+\begin{equation*}
+\eta l_{t}^{\frac{1}{\nu }}=\lambda _{t}\left( 1-\alpha \right)
+A_{t}k_{t}^{\alpha }l_{t}^{-\alpha }
+\end{equation*}%
+\begin{equation*}
+\lambda _{t}=\beta \mathbb{E}_{t}\left[ \lambda _{t+1}\left( \alpha
+A_{t+1}k_{t+1}^{\alpha -1}l_{t+1}^{1-\alpha }+1-\delta \right) \right] .
+\end{equation*}%
+plus the feasibility constraint. The transversality condition of this
+problem is%
+\begin{equation*}
+\lim_{T\rightarrow \infty }E_{0}\left[ \beta ^{T}\lambda _{T}k_{T+1}\right]
+=0.
+\end{equation*}
+
+\underline{\textbf{Shocks}}\textbf{. }The logarithm of TFP follows an AR(1)
+process%
+\begin{equation*}
+\log A_{t+1}=\rho \log A_{t}+\varepsilon _{t+1}
+\end{equation*}%
+where $\varepsilon _{t+1}$ is i.i.d. normal with mean 0 and variance $\sigma
+_{\varepsilon }^{2}$.
+
+\bigskip
+
+\underline{\textbf{Equilibrium equations}}
+
+We can write the equilibrium conditions as the following system of 7
+equations%
+\begin{equation}
+\frac{1}{c_{t}}=\lambda _{t}  \label{eq1}
+\end{equation}%
+\begin{equation}
+\eta l_{t}^{\frac{1}{\nu }}=\lambda _{t}\left( 1-\alpha \right) \frac{y_{t}}{%
+l_{t}}  \label{eq2}
+\end{equation}%
+\begin{equation}
+\lambda _{t}=\beta \mathbb{E}_{t}\left[ \lambda _{t+1}\left( \alpha \frac{%
+y_{t+1}}{k_{t+1}}+1-\delta \right) \right]   \label{eq3}
+\end{equation}%
+\begin{equation}
+y_{t}=A_{t}k_{t}^{\alpha }l_{t}^{1-\alpha }  \label{eq4}
+\end{equation}%
+\begin{equation}
+c_{t}+x_{t}=y_{t}  \label{eq5}
+\end{equation}%
+\begin{equation}
+x_{t}=k_{t+1}-\left( 1-\delta \right) k_{t}  \label{eq6}
+\end{equation}%
+\begin{equation}
+\log A_{t+1}=\rho \log A_{t}+\varepsilon _{t+1}  \label{eq7}
+\end{equation}
+
+\subsection{Steady state}
+
+The second step in the procedure consists of finding the non-stochastic
+steady steate of the economy and calibrating the model. In steady state the
+system (\ref{eq1})-(\ref{eq7}) becomes%
+\begin{equation}
+\frac{1}{\bar{c}}=\bar{\lambda}  \label{ss1}
+\end{equation}%
+\begin{equation}
+\eta \bar{l}^{\frac{1}{\nu }}=\bar{\lambda}\left( 1-\alpha \right) \bar{y}/%
+\bar{l}  \label{ss2}
+\end{equation}%
+\begin{equation}
+1=\beta \left( \alpha \bar{y}/\bar{k}+1-\delta \right)  \label{ss3}
+\end{equation}%
+\begin{equation}
+\bar{y}=\bar{A}\bar{k}^{\alpha }\bar{l}^{1-\alpha }  \label{ss4}
+\end{equation}%
+\begin{equation}
+\bar{c}+\bar{x}=\bar{y}  \label{ss5}
+\end{equation}%
+\begin{equation}
+\bar{x}=\delta \bar{k}  \label{ss6}
+\end{equation}%
+\begin{equation}
+\bar{A}=1.  \label{ss7}
+\end{equation}
+
+The system can be reduced to (get rid of $\bar{\lambda}$, $\bar{x}$)%
+\begin{equation*}
+\eta \bar{l}^{\frac{1}{\nu }}=\frac{1}{\bar{c}}\left( 1-\alpha \right) \frac{%
+\bar{y}}{\bar{l}}
+\end{equation*}%
+\begin{equation*}
+1=\beta \left( \alpha \frac{\bar{y}}{\bar{k}}+1-\delta \right) 
+\end{equation*}%
+\begin{equation*}
+\frac{\bar{y}}{\bar{k}}=\left( \frac{\bar{l}}{\bar{k}}\right) ^{1-\alpha }
+\end{equation*}%
+\begin{equation*}
+\frac{\bar{c}}{\bar{k}}+\delta =\frac{\bar{y}}{\bar{k}}
+\end{equation*}%
+From the second equation we find $\bar{y}/\bar{k}:$%
+\begin{equation*}
+\frac{\bar{y}}{\bar{k}}=\frac{1/\beta -\left( 1-\delta \right) }{\alpha }
+\end{equation*}%
+and the third then gives $\bar{l}/\bar{k}:$%
+\begin{equation*}
+\frac{\bar{l}}{\bar{k}}=\left( \frac{\bar{y}}{\bar{k}}\right) ^{\frac{1}{%
+1-\alpha }}\Rightarrow \frac{\bar{l}}{\bar{k}}=\left( \frac{1/\beta -\left(
+1-\delta \right) }{\alpha }\right) ^{\frac{1}{1-\alpha }}
+\end{equation*}%
+The last equation then gives $\bar{c}/\bar{k}$%
+\begin{equation*}
+\frac{\bar{c}}{\bar{k}}=\frac{\bar{y}}{\bar{k}}-\delta \Rightarrow \frac{%
+\bar{c}}{\bar{k}}=\frac{1/\beta -\left( 1-\delta \right) }{\alpha }-\delta 
+\end{equation*}%
+So we are left with the last equation.\ We write it as%
+\begin{equation*}
+\eta \bar{l}^{\frac{1}{\nu }+1}=\frac{\bar{k}}{\bar{c}}\left( 1-\alpha
+\right) \frac{\bar{y}}{\bar{k}}
+\end{equation*}%
+Since we know $\bar{c}/\bar{k}$ and $\bar{y}/\bar{k}$, we know the right
+side. From here we solve for $\bar{l}:$%
+\begin{equation}
+\bar{l}=\left( \frac{1-\alpha }{\eta }\frac{\bar{y}/\bar{k}}{\bar{c}/\bar{k}}%
+\right) ^{\frac{1}{1+1/\nu }}  \label{lbar}
+\end{equation}%
+Once we have $\bar{l},$ we recover $\bar{k}$ from $\bar{l}/\bar{k}$, and
+then we have the entire steady state
+
+\subsection{Log-linearization of the model}
+
+Log-linearized model%
+\begin{eqnarray}
+0 &=&\hat{c}_{t}+\hat{\lambda}_{t}  \label{lin eq1} \\
+0 &=&(1+\frac{1}{\nu })\hat{l}_{t}-\hat{\lambda}_{t}-\hat{y}_{t}
+\label{lin eq2} \\
+0 &=&\hat{y}_{t}-\hat{A}_{t}-\alpha \hat{k}_{t}-\left( 1-\alpha \right) \hat{%
+l}_{t}  \label{lin eq3} \\
+0 &=&\bar{y}\hat{y}_{t}-\bar{c}\hat{c}_{t}-\bar{x}\hat{x}_{t}
+\label{lin eq4} \\
+\mathbb{E}_{t}[\hat{k}_{t+1}] &=&\left( 1-\delta \right) \hat{k}_{t}+\delta 
+\hat{x}_{t}  \label{lin eq5} \\
+\mathbb{E}_{t}\left[ \hat{\lambda}_{t+1}+\beta \alpha \left( \bar{y}/\bar{k}%
+\right) \left( \hat{y}_{t+1}-\hat{k}_{t+1}\right) \right]  &=&\hat{\lambda}%
+_{t}  \label{lin eq6} \\
+\mathbb{E}_{t}\left[ \hat{A}_{t+1}\right]  &=&\rho \hat{A}_{t}.
+\label{lin eq7}
+\end{eqnarray}%
+Note that I wrote $\mathbb{E}_{t}[\hat{k}_{t+1}]$ even though $\hat{k}_{t+1}$
+is chosen (and therefore already known) at time $t$. This is just notation
+that will allows us to write the model as the following first order vector
+expectational difference equation%
+\begin{equation}
+\mathbf{A}\mathbb{E}_{t}\left[ \mathbf{z}_{t+1}\right] =\mathbf{Bz}_{t}
+\label{Linear Diff Eqn}
+\end{equation}%
+where the vector $\mathbf{z}_{t}$ contains all the variables in the economy
+and $\mathbf{A}$ and $\mathbf{B}$ are square matrices.
+
+We solve numerically this model using the Matlab program \texttt{solab.m}.
+We order the variables $\mathbf{z}_{t}$ as follows:%
+\begin{equation*}
+\mathbf{z}_{t}=\left[ 
+\begin{array}{c}
+\text{endogenous states variables} \\ 
+\text{exogenous states variables} \\ 
+\text{jump variables}%
+\end{array}%
+\right]
+\end{equation*}%
+In the RBC\ model described above, the only endogenous state variable is the
+stock of capital $\hat{k}_{t}$ and the only exogenous state variable is the
+level of technology $\hat{A}_{t}$.\ Therefore, the variable $\mathbf{z}_{t}$
+is given by%
+\begin{equation}
+\mathbf{z}_{t}=\left[ \hat{k}_{t},\ \hat{A}_{t},\ \ \hat{y}_{t},\ \hat{c}%
+_{t},\ \hat{l}_{t},\ \hat{x}_{t},\ \hat{\lambda}_{t}\right] ^{\prime }.
+\label{ordering z}
+\end{equation}%
+Please note that the order within each group of variables does not matter
+(e.g. we could put $c_{t}$ before $y_{t}$ in the vector $\mathbf{z}_{t}$).
+
+In addition, we must tell the program how many of the variables in $\mathbf{z%
+}_{t}$ are state variables. In our case, it is 2: $\hat{k}_{t}$ and $\hat{A}%
+_{t}$. Note that, in this case, $\mathbf{A}$ and $\mathbf{B}$ are $7\times 7$
+matrices. If we let $\mathbf{\kappa }_{t}\equiv \lbrack \hat{k}_{t},\hat{A}%
+_{t}]^{\prime }$ denote the vector of state variables and $\mathbf{u}_{t}=[%
+\hat{y}_{t},\ \hat{c}_{t},\ \hat{l}_{t},\ \hat{x}_{t},\ \hat{\lambda}_{t}]$,
+the vector of jump variables, the solver delivers the equilibrium of the
+\textquotedblleft certainty equivalent\textquotedblright\ model in the form%
+\begin{eqnarray*}
+\mathbf{u}_{t} &=&\mathbf{F\kappa }_{t} \\
+\mathbf{\kappa }_{t+1} &=&\mathbf{P\kappa }_{t}
+\end{eqnarray*}%
+The \textquotedblleft stochastic\textquotedblright\ solution of the model is
+obtained by replacing the second equation above with%
+\begin{equation*}
+\mathbf{\kappa }_{t+1}=\mathbf{P\kappa }_{t}+\left[ 
+\begin{array}{c}
+0 \\ 
+1%
+\end{array}%
+\right] \varepsilon _{t+1}
+\end{equation*}%
+which simply recovers the stochastic shock $\hat{A}_{t+1}=\rho \hat{A}%
+_{t}+\varepsilon _{t+1}$.
+
+For the ordering (\ref{ordering z}), the matrices $\mathbf{A}\mathbb{\ }$and 
+$\mathbf{B}$ of the system (\ref{Linear Diff Eqn}) are given by%
+\begin{equation*}
+\mathbf{A=}\left[ 
+\begin{array}{ccccccc}
+0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+-\beta \alpha \left( \bar{y}/\bar{k}\right) & 0 & \beta \alpha \left( \bar{y}%
+/\bar{k}\right) & 0 & 0 & 0 & 1 \\ 
+0 & 1 & 0 & 0 & 0 & 0 & 0%
+\end{array}%
+\right] \rightarrow \left[ 
+\begin{array}{c}
+\text{equation (\ref{lin eq1})} \\ 
+\text{equation (\ref{lin eq2})} \\ 
+\text{equation (\ref{lin eq3})} \\ 
+\text{equation (\ref{lin eq4})} \\ 
+\text{equation (\ref{lin eq5})} \\ 
+\text{equation (\ref{lin eq6})} \\ 
+\text{equation (\ref{lin eq7})}%
+\end{array}%
+\right]
+\end{equation*}%
+\begin{equation*}
+\mathbf{B=}\left[ 
+\begin{array}{ccccccc}
+0 & 0 & 0 & 1 & 0 & 0 & 1 \\ 
+0 & 0 & -1 & 0 & (1+\frac{1}{\nu }) & 0 & -1 \\ 
+-\alpha & -1 & 1 & 0 & -\left( 1-\alpha \right) & 0 & 0 \\ 
+0 & 0 & \bar{y} & -\bar{c} & 0 & -\bar{x} & 0 \\ 
+1-\delta & 0 & 0 & 0 & 0 & \delta & 0 \\ 
+0 & 0 & 0 & 0 & 0 & 0 & 1 \\ 
+0 & \rho & 0 & 0 & 0 & 0 & 0%
+\end{array}%
+\right] \rightarrow \left[ 
+\begin{array}{c}
+\text{equation (\ref{lin eq1})} \\ 
+\text{equation (\ref{lin eq2})} \\ 
+\text{equation (\ref{lin eq3})} \\ 
+\text{equation (\ref{lin eq4})} \\ 
+\text{equation (\ref{lin eq5})} \\ 
+\text{equation (\ref{lin eq6})} \\ 
+\text{equation (\ref{lin eq7})}%
+\end{array}%
+\right]
+\end{equation*}
+
+Using the calibrated parameter values, the model delivers the following
+solution:%
+\begin{equation*}
+\mathbf{F=}\left[ 
+\begin{array}{cc}
+0.22 & 1.33 \\ 
+0.57 & 0.34 \\ 
+-0.17 & 0.50 \\ 
+-1.10 & 5.07 \\ 
+-0.57 & -0.34%
+\end{array}%
+\right] ;\ \ \ \mathbf{P=}\left[ 
+\begin{array}{cc}
+0.96 & 0.09 \\ 
+0 & 0.95%
+\end{array}%
+\right]
+\end{equation*}%
+Which, in other words, implies the following policy functions:%
+\begin{eqnarray*}
+\hat{y}_{t} &=&0.22\hat{k}_{t}+1.33\hat{A}_{t} \\
+\hat{c}_{t} &=&0.57\hat{k}_{t}+0.34\hat{A}_{t} \\
+\hat{l}_{t} &=&-0.17\hat{k}_{t}+0.50\hat{A}_{t} \\
+\hat{x}_{t} &=&-1.10\hat{k}_{t}+5.07\hat{A}_{t} \\
+\hat{k}_{t+1} &=&0.96\hat{k}_{t}+0.09\hat{A}_{t} \\
+\hat{A}_{t+1} &=&0.95\hat{A}_{t}+\varepsilon _{t+1}.
+\end{eqnarray*}
+
+Once we have this solution, we can compute impulse responses, variance
+decompositions, simulations, compute spectral densities, and so forth.
+
+\end{document}

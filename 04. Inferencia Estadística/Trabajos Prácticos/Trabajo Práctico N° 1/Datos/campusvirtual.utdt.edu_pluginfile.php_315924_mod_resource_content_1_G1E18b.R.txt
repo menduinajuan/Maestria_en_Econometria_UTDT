@@ -1,0 +1,26 @@
+setwd("~/UTDT/Infe 2021/Guia 1") # Seteo carpeta para guardar archivos
+
+# Creo funcion de verosimilitud
+PoissonLikelihood = function(lambda, xSum){
+  return(exp(-10*lambda)*lambda^(xSum))
+} 
+
+# Rango de valores de lambda para graficar
+maxLambda = 5
+lam = seq(from = 0, to = maxLambda, by = maxLambda/200)
+
+# Guardo graficos
+for (xSum in c(10, 15, 20)){
+  filename = paste("PL", xSum, ".png")
+  png(filename, w = 546, h = 430)
+  plot(lam, PoissonLikelihood(lam, xSum), type = 'line', xlim = c(0,4))  
+  title(main = paste("Poisson Likelihood. xSum =", xSum))
+  dev.off()
+  
+  filename = paste("L", filename)
+  png(filename, w = 546, h = 430)
+  plot(lam, log(PoissonLikelihood(lam, xSum)), type = 'line', xlim = c(0,4))
+  title(main = paste("Poisson Log-Likelihood. xSum =", xSum))
+  dev.off()
+}
+

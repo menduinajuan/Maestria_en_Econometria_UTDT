@@ -1,0 +1,26 @@
+setwd("~/UTDT/Infe 2021/Guia 2") # Poner directorio donde quieran guardar resultados.
+xSamp = c(-0.5, -0.2, -0.1, 0.6) # Valores de x en la muestra
+set.seed(123)
+
+# Creo funcion score
+score = function(xVec, theta){
+  result = 0
+  for (x in xVec){
+    result = result + (x / (1 + theta*x))
+  }
+  return(result)
+}
+
+theta = seq(from = -1, to = 1, by = 0.05) # Referencia para graficar
+
+# png("6d.png", w = 546, h = 430) # Para guardar imagen
+x11()
+plot(theta, score(xSamp, theta), type = "l", col = "blue")
+abline(h=0)
+
+# Estimo theta MLE por Newton Raphson con funcion uniroot
+# Parametros: funcion a resolver, rango de busqueda, valores fijos de X.
+uniroot(score, c(-1,1), xVec = xSamp) 
+
+
+

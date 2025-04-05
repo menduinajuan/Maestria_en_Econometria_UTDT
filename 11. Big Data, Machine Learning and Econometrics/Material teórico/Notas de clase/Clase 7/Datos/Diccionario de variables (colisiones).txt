@@ -1,0 +1,40 @@
+Los datos corresponden a clientes (anonimizados) con contratos vigetentes de una compañía de seguros (anonimizada) al "31/12/2021". Para cada contrato hay una ventana de 5 años de historial de siniestros y colisiones. La variable objetivo asume el valor 1 cuando el contrato tiene registrado al menos 1 colisión durante el 2021. Las columnas tienen nombres simples de interpretar, pero por las dudas a continuación se presenta un diccionario de variales:
+ $ ID_contrato                     : Identificador único de contraro de cada póliza (anonimizado)
+ $ VAR_OBJETIVO                    : 0 si el ID contrato NO registró colisión durante el 2021 y 1 en otro caso.
+ $ ANT_VEHICULO                    : Antiguedad del vehículo en años.
+ $ SEXO_TR                         : Género del titular del seguro (de la persona que se supone conduce el auto con regularidad).
+ $ PROVINCIA                       : Flag que indicanda si el titular vive en una ciudad grande o en una ciudad pequeña.
+ $ EDAD_CONDUCTOR                  : Edad actual del conductor.
+ $ ANT_CARNET                      : Antiguedad de su carnet de conducir.
+ $ PUERTAS                         : Cantidad de puertas que tiene el auto asociado a la póliza.
+ $ POTENCIA                        : Caballos de fuerza del auto asociado a la póliza.
+ $ PESO                            : Peso (en kg) del auto asociado a la póliza.
+ $ CILINDRADA                      : Cilindrada del auto asociado a la póliza.
+ $ TURBO                           : Flag para turbo.
+ $ COMBUSTIBLE                     : Flag para tipo de combustible (Diesel, Gasolina, etc)
+ $ PLAZAS                          : Cantidad de plazas del auto asociado a la póliza.
+ $ NMARCA                          : Marca del vehículo asociado a la póliza.
+ $ ANT_POLIZA                      : Antiguedad (años) del contrato de seguro.
+ $ TIPO_PRODUCTO                   : Tipo de producto actualmente contratado.
+ $ TIPO_VEHICULO                   : Tipo de vehículo.
+ $ TIPOPERSONA                     : Tipo de persona que contrata el seguro (Física o Jurídica).
+ $ FREC_COLISION_ANYO_0            : Número de colisiones en el último año.
+ $ FREC_COLISION_ANYO_1            : Número de colisiones en el año anterior al último año.
+ $ FREC_COLISION_ANYO_2            : (idem)
+ $ FREC_COLISION_ANYO_3            : (idem)
+ $ FREC_COLISION_ANYO_4            : (idem)
+ $ FREC_SINIESTRO_TOTAL_ANYO_1     : Número de siniestros en el año anterior al último año (incluye rotura de espejos, robos, fuego, etc).
+ $ FREC_SINIESTRO_TOTAL_ANYO_2     : (idem)
+ $ FREC_SINIESTRO_TOTAL_ANYO_3     : (idem)
+ $ FREC_SINIESTRO_TOTAL_ANYO_4     : (idem)
+ $ FREC_SINIESTRO_SIN_CULPA_ANYO_1 : (idem)
+ $ FREC_SINIESTRO_SIN_CULPA_ANYO_2 : (idem)
+ $ FREC_SINIESTRO_SIN_CULPA_ANYO_3 : (idem)
+ $ FREC_SINIESTRO_SIN_CULPA_ANYO_4 : (idem)
+ $ VALOR_VEHICULO                  : Valor de referencia del vehículo (euros).
+ $ SUMA_COLISION_4_ANYOS           : (obvio)
+ $ SUMA_SINIESTRO_4_ANYOS          : (obvio)
+ $ SUMA_SINIESTRO_SIN_CULPA_4_ANYOS: (obvio)
+ $ ANYOS_SIN_COLISION              : (obvio)
+ $ ANYOS_SIN_SINIESTRO             : (obvio)
+ $ ANYOS_SIN_SINIESTRO_SIN_CULPA   : (obvio)

@@ -1,0 +1,1240 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}G:\Mi unidad\JM\Facultad de Ciencias Económicas (FCE)\Maestría en Econometría\3. Análisis Estadístico Multivariado\Examen\Datos\Examen Final.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res} 8 Mar 2024, 01:05:01
+{txt}
+{com}. 
+. 
+. *##############################################################################*
+.                                                                 * EJERCICIO 1 *
+. *##############################################################################*
+. 
+. 
+. /*
+> *Abro la base*
+> 
+> import excel "Base", sheet("Data") firstrow clear
+> describe
+> 
+> *Reshape de la base*
+> 
+> drop indicator_name
+> reshape long yr, i(country indicator) j(year)
+> replace indicator=subinstr(indicator,".","_",.)
+> reshape wide yr, i(country year) j(indicator) string
+> 
+> save "Base_aux", replace                                                                                                                // Guardo una base auxiliar para seguir porque el segundo reshape es muy costoso
+> */
+. 
+. *Selecciono un subconjunto de indicadores para un año de referencia*
+. 
+. use "Base_aux", clear
+{txt}
+{com}. 
+. local year=2020
+{txt}
+{com}. local indicators="yrEG_ELC_ACCS_ZS yrSP_POP_DPND yrEN_ATM_CO2E_PC yrBN_CAB_XOKA_GD_ZS yrNY_GDP_MKTP_KD yrNY_GDP_PCAP_KD yrNE_CON_GOVT_ZS yrNE_GDI_TOTL_ZS yrIT_NET_USER_ZS yrSP_DYN_LE00_IN"
+{txt}
+{com}. keep country iso year `indicators'
+{txt}
+{com}. keep if year==`year'
+{txt}(588 observations deleted)
+
+{com}. 
+. *Elimino observaciones missings*
+. 
+. foreach var of local indicators {c -(}
+{txt}  2{com}.         keep if `var'!=.
+{txt}  3{com}. {c )-}
+{txt}(0 observations deleted)
+(0 observations deleted)
+(9 observations deleted)
+(3 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(10 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+(0 observations deleted)
+
+{com}. 
+. *Renombro variables*
+. 
+. foreach var of local indicators {c -(}
+{txt}  2{com}.         local name=subinstr("`var'","yr","",.)
+{txt}  3{com}.         rename `var' `name'
+{txt}  4{com}. {c )-}
+{res}{txt}
+{com}. 
+. *Etiqueto los indicadores*
+. 
+. label variable country                          "Country"
+{txt}
+{com}. label variable iso                                      "ISO-code"
+{txt}
+{com}. label variable year                                     "Year"
+{txt}
+{com}. label variable EG_ELC_ACCS_ZS           "Access to electricity (% of population)"
+{txt}
+{com}. label variable SP_POP_DPND                      "Age dependency ratio (% of working-age population)"
+{txt}
+{com}. label variable EN_ATM_CO2E_PC           "CO2 emissions (metric tons per capita)"
+{txt}
+{com}. label variable BN_CAB_XOKA_GD_ZS        "Current account balance (% of GDP)"
+{txt}
+{com}. label variable NY_GDP_MKTP_KD           "GDP (constant 2015 US$)"
+{txt}
+{com}. label variable NY_GDP_PCAP_KD           "GDP per capita (constant 2015 US$)"
+{txt}
+{com}. label variable NE_CON_GOVT_ZS           "General government final consumption expenditure (% of GDP)"
+{txt}
+{com}. label variable NE_GDI_TOTL_ZS           "Gross capital formation (% of GDP)"
+{txt}
+{com}. label variable IT_NET_USER_ZS           "Individuals using the Internet (% of population)"
+{txt}
+{com}. label variable SP_DYN_LE00_IN           "Life expectancy at birth, total (years)"
+{txt}
+{com}. 
+. *Guardo la base*
+. 
+. order country iso year
+{txt}
+{com}. sort country
+{txt}
+{com}. save "Base", replace
+{txt}{p 0 4 2}
+file {bf}
+Base.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. *##############################################################################*
+.                                                                 * EJERCICIO 2 *
+. *##############################################################################*
+. 
+. 
+. *Abro la base*
+. 
+. use "Base", clear
+{txt}
+{com}. describe
+
+{txt}Contains data from {res}Base.dta
+{txt} Observations:{res}            20                  
+{txt}    Variables:{res}            13                  8 Mar 2024 01:05
+{txt}{hline}
+Variable      Storage   Display    Value
+    name         type    format    label      Variable label
+{hline}
+{p 0 48}{res}{bind:country        }{txt}{bind: str30   }{bind:{txt}%30s      }{space 1}{bind:         }{bind:  }{res}{res}Country{p_end}
+{p 0 48}{bind:iso            }{txt}{bind: str3    }{bind:{txt}%9s       }{space 1}{bind:         }{bind:  }{res}{res}ISO-code{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Year{p_end}
+{p 0 48}{bind:BN_CAB_XOKA_G~S}{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Current account balance (% of GDP){p_end}
+{p 0 48}{bind:EG_ELC_ACCS_ZS }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Access to electricity (% of population){p_end}
+{p 0 48}{bind:EN_ATM_CO2E_PC }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}CO2 emissions (metric tons per capita){p_end}
+{p 0 48}{bind:IT_NET_USER_ZS }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Individuals using the Internet (% of population){p_end}
+{p 0 48}{bind:NE_CON_GOVT_ZS }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}General government final consumption expenditure (% of GDP){p_end}
+{p 0 48}{bind:NE_GDI_TOTL_ZS }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Gross capital formation (% of GDP){p_end}
+{p 0 48}{bind:NY_GDP_MKTP_KD }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}GDP (constant 2015 US$){p_end}
+{p 0 48}{bind:NY_GDP_PCAP_KD }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}GDP per capita (constant 2015 US$){p_end}
+{p 0 48}{bind:SP_DYN_LE00_IN }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Life expectancy at birth, total (years){p_end}
+{p 0 48}{bind:SP_POP_DPND    }{txt}{bind: double  }{bind:{txt}%10.0g    }{space 1}{bind:         }{bind:  }{res}{res}Age dependency ratio (% of working-age population){p_end}
+{txt}{hline}
+Sorted by: {res}country
+{txt}
+{com}. 
+. *Lista de variables*
+. 
+. local vars="BN_CAB_XOKA_GD_ZS EG_ELC_ACCS_ZS EN_ATM_CO2E_PC IT_NET_USER_ZS NE_CON_GOVT_ZS NE_GDI_TOTL_ZS NY_GDP_MKTP_KD NY_GDP_PCAP_KD SP_DYN_LE00_IN SP_POP_DPND"
+{txt}
+{com}. local cols: word count `vars'
+{txt}
+{com}. 
+. *Análisis descriptivo*
+. 
+. summarize `vars'
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+BN_CAB_XOK~S {c |}{res}         20   -1.733542    6.999463  -24.33087   5.041589
+{txt}EG_ELC_ACC~S {c |}{res}         20    95.45054    12.04204   46.33651        100
+{txt}EN_ATM_CO2~C {c |}{res}         20    2.131974    1.529822    .283815   6.042251
+{txt}IT_NET_USE~S {c |}{res}         20    69.47973    16.61979   36.39475   95.68551
+{txt}NE_CON_GOV~S {c |}{res}         20    15.73852    3.167676   7.312056   20.13515
+{txt}{hline 13}{c +}{hline 57}
+NE_GDI_TOT~S {c |}{res}         20    21.02839    8.799049   13.50745   55.77684
+{txt}NY_GDP_MKT~D {c |}{res}         20    2.32e+11    4.49e+11   1.34e+09   1.76e+12
+{txt}NY_GDP_PCA~D {c |}{res}         20    7363.095    5197.643   1324.283   22657.04
+{txt}SP_DYN_LE0~N {c |}{res}         20    72.81105    3.965071     64.052     79.377
+{txt}{space 1}SP_POP_DPND {c |}{res}         20    50.18109    6.698015   38.64962   62.15107
+{txt}
+{com}. summarize `vars', detail
+
+             {txt}Current account balance (% of GDP)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}-24.33087      -24.33087
+{txt} 5%    {res}-20.33725      -16.34363
+{txt}10%    {res}-11.24681       -6.14999       {txt}Obs         {res}         20
+{txt}25%    {res} -1.92997      -3.459663       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} .3691648                      {txt}Mean          {res}-1.733542
+                        {txt}Largest       Std. dev.     {res} 6.999463
+{txt}75%    {res}  2.02085       2.794437
+{txt}90%    {res} 3.244133       2.890741       {txt}Variance      {res} 48.99248
+{txt}95%    {res} 4.319557       3.597525       {txt}Skewness      {res}-2.184569
+{txt}99%    {res} 5.041589       5.041589       {txt}Kurtosis      {res} 7.183976
+
+           {txt}Access to electricity (% of population)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res} 46.33651       46.33651
+{txt} 5%    {res} 66.16991        86.0033
+{txt}10%    {res}  89.5455        93.0877       {txt}Obs         {res}         20
+{txt}25%    {res} 96.72755           96.2       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} 99.70136                      {txt}Mean          {res} 95.45054
+                        {txt}Largest       Std. dev.     {res} 12.04204
+{txt}75%    {res}    99.95            100
+{txt}90%    {res}      100            100       {txt}Variance      {res} 145.0107
+{txt}95%    {res}      100            100       {txt}Skewness      {res}-3.657344
+{txt}99%    {res}      100            100       {txt}Kurtosis      {res} 15.36321
+
+           {txt}CO2 emissions (metric tons per capita)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}  .283815        .283815
+{txt} 5%    {res} .4810336       .6782521
+{txt}10%    {res} .7755816       .8729112       {txt}Obs         {res}         20
+{txt}25%    {res} 1.078936       1.000407       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} 1.646684                      {txt}Mean          {res} 2.131974
+                        {txt}Largest       Std. dev.     {res} 1.529822
+{txt}75%    {res} 2.560474       3.405618
+{txt}90%    {res} 4.758441       4.395151       {txt}Variance      {res} 2.340354
+{txt}95%    {res} 5.581991        5.12173       {txt}Skewness      {res} 1.272932
+{txt}99%    {res} 6.042251       6.042251       {txt}Kurtosis      {res} 3.711625
+
+      {txt}Individuals using the Internet (% of population)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res} 36.39475       36.39475
+{txt} 5%    {res} 39.94215       43.48955
+{txt}10%    {res} 45.50094       47.51234       {txt}Obs         {res}         20
+{txt}25%    {res} 57.05388       53.40465       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} 71.09509                      {txt}Mean          {res} 69.47973
+                        {txt}Largest       Std. dev.     {res} 16.61979
+{txt}75%    {res}  81.7705       85.51439
+{txt}90%    {res} 89.42351         86.371       {txt}Variance      {res} 276.2175
+{txt}95%    {res} 94.08076       92.47602       {txt}Skewness      {res}-.3351634
+{txt}99%    {res} 95.68551       95.68551       {txt}Kurtosis      {res} 2.172259
+
+      {txt}General government final consumption expenditure
+                         (% of GDP)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res} 7.312056       7.312056
+{txt} 5%    {res} 9.390219       11.46838
+{txt}10%    {res} 11.98696       12.50553       {txt}Obs         {res}         20
+{txt}25%    {res} 13.80933       12.62662       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} 16.20428                      {txt}Mean          {res} 15.73852
+                        {txt}Largest       Std. dev.     {res} 3.167676
+{txt}75%    {res} 17.43805       18.70721
+{txt}90%    {res} 19.71461       19.69059       {txt}Variance      {res} 10.03417
+{txt}95%    {res} 19.93689       19.73863       {txt}Skewness      {res}-.8783651
+{txt}99%    {res} 20.13515       20.13515       {txt}Kurtosis      {res} 3.657468
+
+             {txt}Gross capital formation (% of GDP)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res} 13.50745       13.50745
+{txt} 5%    {res} 13.81902        14.1306
+{txt}10%    {res} 14.95436       15.77813       {txt}Obs         {res}         20
+{txt}25%    {res} 16.63136       16.11582       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} 18.95414                      {txt}Mean          {res} 21.02839
+                        {txt}Largest       Std. dev.     {res} 8.799049
+{txt}75%    {res} 22.40565       23.00297
+{txt}90%    {res} 24.92916       24.47666       {txt}Variance      {res} 77.42326
+{txt}95%    {res} 40.57925       25.38166       {txt}Skewness      {res} 3.236814
+{txt}99%    {res} 55.77684       55.77684       {txt}Kurtosis      {res} 13.55132
+
+                   {txt}GDP (constant 2015 US$)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res} 1.34e+09       1.34e+09
+{txt} 5%    {res} 1.66e+09       1.99e+09
+{txt}10%    {res} 5.60e+09       9.21e+09       {txt}Obs         {res}         20
+{txt}25%    {res} 1.42e+10       1.29e+10       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} 5.10e+10                      {txt}Mean          {res} 2.32e+11
+                        {txt}Largest       Std. dev.     {res} 4.49e+11
+{txt}75%    {res} 2.19e+11       2.98e+11
+{txt}90%    {res} 8.34e+11       5.15e+11       {txt}Variance      {res} 2.01e+23
+{txt}95%    {res} 1.46e+12       1.15e+12       {txt}Skewness      {res} 2.540562
+{txt}99%    {res} 1.76e+12       1.76e+12       {txt}Kurtosis      {res} 8.461652
+
+             {txt}GDP per capita (constant 2015 US$)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res} 1324.283       1324.283
+{txt} 5%    {res} 1614.284       1904.284
+{txt}10%    {res} 2047.629       2190.974       {txt}Obs         {res}         20
+{txt}25%    {res} 3949.405       2920.197       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} 5803.647                      {txt}Mean          {res} 7363.095
+                        {txt}Largest       Std. dev.     {res} 5197.643
+{txt}75%    {res} 10244.17       12030.05
+{txt}90%    {res} 13587.52       12741.16       {txt}Variance      {res} 2.70e+07
+{txt}95%    {res} 18545.46       14433.88       {txt}Skewness      {res} 1.353763
+{txt}99%    {res} 22657.04       22657.04       {txt}Kurtosis      {res} 4.743433
+
+           {txt}Life expectancy at birth, total (years)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}   64.052         64.052
+{txt} 5%    {res}  64.2595         64.467
+{txt}10%    {res}     67.3         70.133       {txt}Obs         {res}         20
+{txt}25%    {res}  71.6285         71.061       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res}  72.7655                      {txt}Mean          {res} 72.81105
+                        {txt}Largest       Std. dev.     {res} 3.965071
+{txt}75%    {res}   74.389         75.892
+{txt}90%    {res}   79.059         78.841       {txt}Variance      {res} 15.72179
+{txt}95%    {res}   79.327         79.277       {txt}Skewness      {res}-.4083242
+{txt}99%    {res}   79.377         79.377       {txt}Kurtosis      {res}  3.54965
+
+     {txt}Age dependency ratio (% of working-age population)
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res} 38.64962       38.64962
+{txt} 5%    {res} 39.20145       39.75327
+{txt}10%    {res} 40.18743       40.62159       {txt}Obs         {res}         20
+{txt}25%    {res} 44.31253       43.11378       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} 51.77048                      {txt}Mean          {res} 50.18109
+                        {txt}Largest       Std. dev.     {res} 6.698015
+{txt}75%    {res} 54.74276       54.94383
+{txt}90%    {res} 58.05307       57.18437       {txt}Variance      {res} 44.86341
+{txt}95%    {res} 60.53642       58.92177       {txt}Skewness      {res}-.2289651
+{txt}99%    {res} 62.15107       62.15107       {txt}Kurtosis      {res} 2.041716
+{txt}
+{com}. tabstat `vars', statistics(mean variance cv)
+
+{txt}   Stats {...}
+{c |}{...}
+  BN_CAB~S  EG_ELC~S  EN_ATM~C  IT_NET~S  NE_CON~S  NE_GDI~S  NY~TP_KD  NY~AP_KD  SP_DYN~N  SP_POP~D
+{hline 9}{c +}{hline 100}
+{ralign 8:Mean} {...}
+{c |}{...}
+ {res}-1.733542  95.45054  2.131974  69.47973  15.73852  21.02839  2.32e+11  7363.095  72.81105  50.18109
+{txt}{ralign 8:Variance} {...}
+{c |}{...}
+ {res} 48.99248  145.0107  2.340354  276.2175  10.03417  77.42326  2.01e+23  2.70e+07  15.72179  44.86341
+{txt}{ralign 8:CV} {...}
+{c |}{...}
+ {res}-4.037665    .12616   .717561  .2392035   .201269  .4184366  1.931874  .7059046   .054457  .1334769
+{txt}{hline 9}{c BT}{hline 100}
+
+{com}. 
+. *Medidas de variabilidad global*
+. 
+. correlate `vars'
+{txt}(obs=20)
+
+             {c |} BN_CAB~S EG_ELC~S EN_ATM~C IT_NET~S NE_CON~S NE_GDI~S NY~TP_KD NY~AP_KD SP_DYN~N SP_POP~D
+{hline 13}{c +}{hline 90}
+BN_CAB_XOK~S {c |}{res}   1.0000
+{txt}EG_ELC_ACC~S {c |}{res}  -0.1950   1.0000
+{txt}EN_ATM_CO2~C {c |}{res}  -0.7962   0.3951   1.0000
+{txt}IT_NET_USE~S {c |}{res}  -0.5956   0.6103   0.7934   1.0000
+{txt}NE_CON_GOV~S {c |}{res}  -0.2527   0.6374   0.2380   0.4152   1.0000
+{txt}NE_GDI_TOT~S {c |}{res}  -0.5910   0.0026   0.5231   0.4208   0.0761   1.0000
+{txt}NY_GDP_MKT~D {c |}{res}   0.1107   0.1704   0.1029   0.2384   0.1764  -0.2198   1.0000
+{txt}NY_GDP_PCA~D {c |}{res}  -0.7965   0.4003   0.9047   0.8191   0.2073   0.3676   0.1280   1.0000
+{txt}SP_DYN_LE0~N {c |}{res}  -0.2924   0.5713   0.4692   0.6818   0.3750   0.2958   0.0812   0.5761   1.0000
+ {txt}SP_POP_DPND {c |}{res}   0.6646  -0.4136  -0.6228  -0.7337  -0.5030  -0.4354  -0.1998  -0.6318  -0.5459   1.0000
+
+{txt}
+{com}. matrix define C=r(C)
+{txt}
+{com}. correlate `vars', covariance
+{txt}(obs=20)
+
+             {c |} BN_CAB~S EG_ELC~S EN_ATM~C IT_NET~S NE_CON~S NE_GDI~S NY~TP_KD NY~AP_KD SP_DYN~N SP_POP~D
+{hline 13}{c +}{hline 90}
+BN_CAB_XOK~S {c |}{res}  48.9925
+{txt}EG_ELC_ACC~S {c |}{res}  -16.436  145.011
+{txt}EN_ATM_CO2~C {c |}{res} -8.52574  7.27781  2.34035
+{txt}IT_NET_USE~S {c |}{res} -69.2809  122.143  20.1715  276.217
+{txt}NE_CON_GOV~S {c |}{res} -5.60217  24.3135  1.15328  21.8565  10.0342
+{txt}NE_GDI_TOT~S {c |}{res} -36.3966  .277449  7.04133  61.5438  2.12191  77.4233
+{txt}NY_GDP_MKT~D {c |}{res}  3.5e+11  9.2e+11  7.1e+10  1.8e+12  2.5e+11 -8.7e+11  2.0e+23
+{txt}NY_GDP_PCA~D {c |}{res} -28977.4  25054.4  7193.31  70761.1  3412.84  16813.2  3.0e+14  2.7e+07
+{txt}SP_DYN_LE0~N {c |}{res} -8.11475  27.2763    2.846  44.9305  4.71054  10.3208  1.4e+11  11872.2  15.7218
+ {txt}SP_POP_DPND {c |}{res}  31.1587 -33.3573 -6.38174 -81.6805 -10.6715 -25.6618 -6.0e+11 -21994.7 -14.4968  44.8634
+
+{txt}
+{com}. matrix define S=r(C)
+{txt}
+{com}. 
+. foreach mat in C S {c -(}
+{txt}  2{com}. 
+.         local var_tot_`mat'=trace(`mat')
+{txt}  3{com}.         local var_media_`mat'=`var_tot_`mat''/`cols'
+{txt}  4{com}.         local var_gen_`mat'=det(`mat')
+{txt}  5{com}.         local var_efec_`mat'=det(`mat')^(1/`cols')
+{txt}  6{com}. 
+.         display as text "Varianza total `mat' = "                       as result `var_tot_`mat''
+{txt}  7{com}.         display as text "Varianza media `mat' = "                       as result `var_media_`mat''
+{txt}  8{com}.         display as text "Varianza generalizada `mat' = "        as result `var_gen_`mat''
+{txt}  9{com}.         display as text "Varianza efectiva `mat' = "            as result `var_efec_`mat''
+{txt} 10{com}. 
+. {c )-}
+{txt}Varianza total C = {res}10
+{txt}Varianza media C = {res}1
+{txt}Varianza generalizada C = {res}.00012383
+{txt}Varianza efectiva C = {res}.40670729
+{txt}Varianza total S = {res}2.014e+23
+{txt}Varianza media S = {res}2.014e+22
+{txt}Varianza generalizada S = {res}1.696e+39
+{txt}Varianza efectiva S = {res}8373.9535
+{txt}
+{com}. 
+. 
+. *##############################################################################*
+.                                                                 * EJERCICIO 3 *
+. *##############################################################################*
+. 
+. 
+. correlate `vars'
+{txt}(obs=20)
+
+             {c |} BN_CAB~S EG_ELC~S EN_ATM~C IT_NET~S NE_CON~S NE_GDI~S NY~TP_KD NY~AP_KD SP_DYN~N SP_POP~D
+{hline 13}{c +}{hline 90}
+BN_CAB_XOK~S {c |}{res}   1.0000
+{txt}EG_ELC_ACC~S {c |}{res}  -0.1950   1.0000
+{txt}EN_ATM_CO2~C {c |}{res}  -0.7962   0.3951   1.0000
+{txt}IT_NET_USE~S {c |}{res}  -0.5956   0.6103   0.7934   1.0000
+{txt}NE_CON_GOV~S {c |}{res}  -0.2527   0.6374   0.2380   0.4152   1.0000
+{txt}NE_GDI_TOT~S {c |}{res}  -0.5910   0.0026   0.5231   0.4208   0.0761   1.0000
+{txt}NY_GDP_MKT~D {c |}{res}   0.1107   0.1704   0.1029   0.2384   0.1764  -0.2198   1.0000
+{txt}NY_GDP_PCA~D {c |}{res}  -0.7965   0.4003   0.9047   0.8191   0.2073   0.3676   0.1280   1.0000
+{txt}SP_DYN_LE0~N {c |}{res}  -0.2924   0.5713   0.4692   0.6818   0.3750   0.2958   0.0812   0.5761   1.0000
+ {txt}SP_POP_DPND {c |}{res}   0.6646  -0.4136  -0.6228  -0.7337  -0.5030  -0.4354  -0.1998  -0.6318  -0.5459   1.0000
+
+{txt}
+{com}. correlate `vars', covariance
+{txt}(obs=20)
+
+             {c |} BN_CAB~S EG_ELC~S EN_ATM~C IT_NET~S NE_CON~S NE_GDI~S NY~TP_KD NY~AP_KD SP_DYN~N SP_POP~D
+{hline 13}{c +}{hline 90}
+BN_CAB_XOK~S {c |}{res}  48.9925
+{txt}EG_ELC_ACC~S {c |}{res}  -16.436  145.011
+{txt}EN_ATM_CO2~C {c |}{res} -8.52574  7.27781  2.34035
+{txt}IT_NET_USE~S {c |}{res} -69.2809  122.143  20.1715  276.217
+{txt}NE_CON_GOV~S {c |}{res} -5.60217  24.3135  1.15328  21.8565  10.0342
+{txt}NE_GDI_TOT~S {c |}{res} -36.3966  .277449  7.04133  61.5438  2.12191  77.4233
+{txt}NY_GDP_MKT~D {c |}{res}  3.5e+11  9.2e+11  7.1e+10  1.8e+12  2.5e+11 -8.7e+11  2.0e+23
+{txt}NY_GDP_PCA~D {c |}{res} -28977.4  25054.4  7193.31  70761.1  3412.84  16813.2  3.0e+14  2.7e+07
+{txt}SP_DYN_LE0~N {c |}{res} -8.11475  27.2763    2.846  44.9305  4.71054  10.3208  1.4e+11  11872.2  15.7218
+ {txt}SP_POP_DPND {c |}{res}  31.1587 -33.3573 -6.38174 -81.6805 -10.6715 -25.6618 -6.0e+11 -21994.7 -14.4968  44.8634
+
+{txt}
+{com}. 
+. 
+. *##############################################################################*
+.                                                                 * EJERCICIO 4 *
+. *##############################################################################*
+. 
+. 
+. *PCA basado en matriz de varianzas y covarianzas*
+. 
+. pca `vars', covariance
+
+{txt}Principal components/covariance{col 50}Number of obs    = {res}        20
+{col 50}{txt}Number of comp.  = {res}         1
+{col 50}{txt}Trace            {col 67}=  {res} 2.01e+23
+{col 5}{txt}Rotation: (unrotated = principal){col 50}Rho              = {res}    1.0000
+
+{txt}{col 5}{hline 13}{c TT}{hline 60}
+{col 5}   Component {c |}   Eigenvalue   Difference         Proportion   Cumulative
+{col 5}{hline 13}{c +}{hline 60}
+{col 5}{ralign 12:Comp1} {c |}{res}  2.01402e+23  2.01402e+23             1.0000       1.0000
+{txt}{col 5}{ralign 12:Comp2} {c |}{res}            0            0             0.0000       1.0000
+{txt}{col 5}{ralign 12:Comp3} {c |}{res}            0            0             0.0000       1.0000
+{txt}{col 5}{ralign 12:Comp4} {c |}{res}            0            0             0.0000       1.0000
+{txt}{col 5}{ralign 12:Comp5} {c |}{res}            0            0             0.0000       1.0000
+{txt}{col 5}{ralign 12:Comp6} {c |}{res}            0            0             0.0000       1.0000
+{txt}{col 5}{ralign 12:Comp7} {c |}{res}            0            0             0.0000       1.0000
+{txt}{col 5}{ralign 12:Comp8} {c |}{res}            0            0             0.0000       1.0000
+{txt}{col 5}{ralign 12:Comp9} {c |}{res}            0            0             0.0000       1.0000
+{txt}{col 5}{ralign 12:Comp10} {c |}{res}            0            .             0.0000       1.0000
+{txt}{col 5}{hline 13}{c BT}{hline 60}
+
+Principal components (eigenvectors) 
+
+{space 4}{hline 13}{c  TT}{hline 10}{c  TT}{hline 13}
+{space 4}{space 0}{ralign 12:Variable}{space 1}{c |}{space 1}{ralign 8:Comp1}{space 1}{c |}{space 1}{ralign 11:Unexplained}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{c   +}{hline 13}
+{space 4}{space 0}{ralign 12:BN_CAB_XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      48.39}}}{space 1}
+{space 4}{space 0}{ralign 12:EG_ELC_ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      140.8}}}{space 1}
+{space 4}{space 0}{ralign 12:EN_ATM_CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      2.316}}}{space 1}
+{space 4}{space 0}{ralign 12:IT_NET_USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      260.5}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_CON_GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      9.722}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_GDI_TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      73.68}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  1.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:   33554432}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:   26573043}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_DYN_LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      15.62}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_POP_DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.0000}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      43.07}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{c  BT}{hline 13}
+
+{com}. matrix define eigenvalues_cov=e(Ev)
+{txt}
+{com}. matrix define eigenvectors_cov=e(L)
+{txt}
+{com}. matrix list eigenvalues_cov
+{res}
+{txt}eigenvalues_cov[1,10]
+     Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:
+           Comp1         Comp2         Comp3         Comp4         Comp5         Comp6         Comp7         Comp8
+r1 {res}    2.014e+23             0             0             0             0             0             0             0
+
+{txt}     Eigenvalues:  Eigenvalues:
+           Comp9        Comp10
+r1 {res}            0             0
+{reset}
+{com}. matrix list eigenvectors_cov
+{res}
+{txt}eigenvectors_cov[10,1]
+                   Comp1
+BN_CAB_XOK~S {res}  1.727e-12
+{txt}EG_ELC_ACC~S {res}  4.574e-12
+{txt}EN_ATM_CO2~C {res}  3.509e-13
+{txt}IT_NET_USE~S {res}  8.830e-12
+{txt}NE_CON_GOV~S {res}  1.245e-12
+{txt}NE_GDI_TOT~S {res} -4.309e-12
+{txt}NY_GDP_MKT~D {res}          1
+{txt}NY_GDP_PCA~D {res}  1.482e-09
+{txt}SP_DYN_LE0~N {res}  7.175e-13
+{txt} SP_POP_DPND {res} -2.983e-12
+{reset}
+{com}. 
+. screeplot, title("PCA" "(basado en matriz de varianzas y covarianzas)", color(black)) ytitle("Autovalor") xtitle("Componente")
+{res}{txt}
+{com}. 
+. matrix define   prop_cov = J(`cols',2,.)
+{txt}
+{com}. matrix rownames prop_cov = "Comp1" "Comp2" "Comp3" "Comp4" "Comp5" "Comp6" "Comp7" "Comp8" "Comp9" "Comp10"
+{txt}
+{com}. matrix colnames prop_cov = "comp" "prop"
+{txt}
+{com}. 
+. local traza=0
+{txt}
+{com}. forvalues i=1(1)`cols' {c -(}
+{txt}  2{com}.         local traza=`traza'+eigenvalues_cov[1,`i']
+{txt}  3{com}. {c )-}
+{txt}
+{com}. 
+. forvalues i=1(1)`cols' {c -(}
+{txt}  2{com}.         matrix prop_cov [`i',1]=`i'
+{txt}  3{com}.         matrix prop_cov [`i',2]=eigenvalues_cov[1,`i']/`traza'
+{txt}  4{com}. {c )-}
+{txt}
+{com}. 
+. matrix list prop_cov
+{res}
+{txt}prop_cov[10,2]
+        comp  prop
+ Comp1 {res}    1     1
+{txt} Comp2 {res}    2     0
+{txt} Comp3 {res}    3     0
+{txt} Comp4 {res}    4     0
+{txt} Comp5 {res}    5     0
+{txt} Comp6 {res}    6     0
+{txt} Comp7 {res}    7     0
+{txt} Comp8 {res}    8     0
+{txt} Comp9 {res}    9     0
+{txt}Comp10 {res}   10     0
+{reset}
+{com}. 
+. preserve
+{txt}
+{com}. svmat prop_cov, names(col)
+{txt}
+{com}. generate prop_acum=sum(prop)
+{txt}
+{com}. graph bar prop, over(comp) bargap(100) blabel(bar, format(%5.3g)) ///
+>                                 ylabel(0.1 "10%" 0.2 "20%" 0.3 "30%" 0.4 "40%" 0.5 "50%" 0.6 "60%" 0.7 "70%" 0.8 "80%" 0.9 "90%" 1.0 "100%") ///
+>                                 title("Porcentaje de varianza explicada por cada componente" "(basado en matriz de varianzas y covarianzas)", color(black)) ytitle("")
+{res}{txt}
+{com}. graph bar prop_acum, over(comp) bargap(100) blabel(bar, format(%5.3g)) ///
+>                                          ylabel(0.1 "10%" 0.2 "20%" 0.3 "30%" 0.4 "40%" 0.5 "50%" 0.6 "60%" 0.7 "70%" 0.8 "80%" 0.9 "90%" 1.0 "100%") ///
+>                                          title("Porcentaje acumulado de varianza explicada por cada componente" "(basado en matriz de varianzas y covarianzas)", color(black)) ytitle("")
+{res}{txt}
+{com}. restore
+{txt}
+{com}. 
+. *PCA basado en matriz de correlaciones*
+. 
+. pca `vars', correlation
+
+{txt}Principal components/correlation{col 50}Number of obs    = {res}        20
+{col 50}{txt}Number of comp.  = {res}        10
+{col 50}{txt}Trace            {col 67}=  {res}       10
+{col 5}{txt}Rotation: (unrotated = principal){col 50}Rho              = {res}    1.0000
+
+{txt}{col 5}{hline 13}{c TT}{hline 60}
+{col 5}   Component {c |}   Eigenvalue   Difference         Proportion   Cumulative
+{col 5}{hline 13}{c +}{hline 60}
+{col 5}{ralign 12:Comp1} {c |}{res}      5.15483      3.46141             0.5155       0.5155
+{txt}{col 5}{ralign 12:Comp2} {c |}{res}      1.69343      .713389             0.1693       0.6848
+{txt}{col 5}{ralign 12:Comp3} {c |}{res}      .980039       .26705             0.0980       0.7828
+{txt}{col 5}{ralign 12:Comp4} {c |}{res}      .712989      .124529             0.0713       0.8541
+{txt}{col 5}{ralign 12:Comp5} {c |}{res}       .58846      .216419             0.0588       0.9130
+{txt}{col 5}{ralign 12:Comp6} {c |}{res}      .372041      .144929             0.0372       0.9502
+{txt}{col 5}{ralign 12:Comp7} {c |}{res}      .227112     .0803226             0.0227       0.9729
+{txt}{col 5}{ralign 12:Comp8} {c |}{res}      .146789     .0517453             0.0147       0.9876
+{txt}{col 5}{ralign 12:Comp9} {c |}{res}     .0950439      .065779             0.0095       0.9971
+{txt}{col 5}{ralign 12:Comp10} {c |}{res}     .0292649            .             0.0029       1.0000
+{txt}{col 5}{hline 13}{c BT}{hline 60}
+
+Principal components (eigenvectors) 
+
+{space 4}{hline 13}{c  TT}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:Variable}{space 1}{c |}{space 1}{ralign 8:Comp1}{space 1}{space 1}{ralign 8:Comp2}{space 1}{space 1}{ralign 8:Comp3}{space 1}{space 1}{ralign 8:Comp4}{space 1}{space 1}{ralign 8:Comp5}{space 1}{space 1}{ralign 8:Comp6}{space 1}{space 1}{ralign 8:Comp7}{space 1}{space 1}{ralign 8:Comp8}{space 1}{space 1}{ralign 8:Comp9}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:BN_CAB_XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3457}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3523}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0310}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2515}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3384}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1305}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1454}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4319}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4179}}}{space 1}
+{space 4}{space 0}{ralign 12:EG_ELC_ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2670}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4609}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2893}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2048}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2269}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4188}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.3991}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.4447}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0196}}}{space 1}
+{space 4}{space 0}{ralign 12:EN_ATM_CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3883}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1899}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2000}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0925}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2274}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2758}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1107}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1416}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.7221}}}{space 1}
+{space 4}{space 0}{ralign 12:IT_NET_USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.4058}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0823}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0973}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1608}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0846}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1137}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.3019}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.6479}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.4437}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_CON_GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2240}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4265}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.3959}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.5386}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1443}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0226}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4644}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2777}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0230}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_GDI_TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2350}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.4485}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2104}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2462}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.5766}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4897}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0081}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0962}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0489}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0675}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4278}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.7486}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2521}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2835}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1862}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1393}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2170}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0744}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3896}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1321}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2482}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2608}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2762}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1085}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2291}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0275}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1389}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_DYN_LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3120}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1898}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2068}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.5004}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4821}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.3191}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3944}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1916}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0412}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_POP_DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3670}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0337}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0130}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3573}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1811}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.5745}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.5226}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0701}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2780}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}{hline 10}
+
+{space 4}{hline 13}{c  TT}{hline 10}{c  TT}{hline 13}
+{space 4}{space 0}{ralign 12:Variable}{space 1}{c |}{space 1}{ralign 8:Comp10}{space 1}{c |}{space 1}{ralign 11:Unexplained}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{c   +}{hline 13}
+{space 4}{space 0}{ralign 12:BN_CAB_XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.4223}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{space 0}{ralign 12:EG_ELC_ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0802}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{space 0}{ralign 12:EN_ATM_CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.2883}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{space 0}{ralign 12:IT_NET_USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.2556}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_CON_GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0809}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_GDI_TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2340}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.0376}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.7352}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_DYN_LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.2129}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_POP_DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.1352}}}{space 1}{c |}{space 1}{center 11:{res:{sf:          0}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{c  BT}{hline 13}
+
+{com}. matrix define eigenvalues_cor=e(Ev)
+{txt}
+{com}. matrix define eigenvectors_cor=e(L)
+{txt}
+{com}. matrix list eigenvalues_cor
+{res}
+{txt}eigenvalues_cor[1,10]
+     Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:  Eigenvalues:
+           Comp1         Comp2         Comp3         Comp4         Comp5         Comp6         Comp7         Comp8
+r1 {res}     5.154834     1.6934278     .98003876     .71298915     .58846001     .37204055     .22711178     .14678916
+
+{txt}     Eigenvalues:  Eigenvalues:
+           Comp9        Comp10
+r1 {res}    .09504386      .0292649
+{reset}
+{com}. matrix list eigenvectors_cor
+{res}
+{txt}eigenvectors_cor[10,10]
+                   Comp1       Comp2       Comp3       Comp4       Comp5       Comp6       Comp7       Comp8
+BN_CAB_XOK~S {res} -.34570896   .35228897  -.03103591   .25152908   .33835879   .13045864  -.14535842   .43193752
+{txt}EG_ELC_ACC~S {res}   .2669892   .46085195  -.28926538   .20481032     -.22693   .41878743  -.39906842  -.44470897
+{txt}EN_ATM_CO2~C {res}  .38828852  -.18990577   .19997301   .09248295  -.22744202   .27580306   .11065145   .14160401
+{txt}IT_NET_USE~S {res}  .40579529   .08226893   .09730645   .16084133   .08463103   .11367108   -.3019274   .64790406
+{txt}NE_CON_GOV~S {res}  .22396531   .42651136   -.3958587  -.53859883  -.14428133    .0225868   .46435155   .27767609
+{txt}NE_GDI_TOT~S {res}  .23500996  -.44848737  -.21042742  -.24624364   .57658303   .48970591   .00805768  -.09617185
+{txt}NY_GDP_MKT~D {res}  .06747265   .42780696    .7486085  -.25208167   .28345169   .18620936   .13932078   -.2169977
+{txt}NY_GDP_PCA~D {res}  .38964823  -.13211195   .24816604   .26075316  -.27624134  -.10850249   .22913886   .02749033
+{txt}SP_DYN_LE0~N {res}  .31197996   .18976667  -.20676144   .50042455   .48209279  -.31906365   .39438011   -.1916405
+{txt} SP_POP_DPND {res}  -.3669664  -.03374864   -.0130152   .35731792   -.1810832   .57449005   .52256442   .07006933
+
+{txt}                   Comp9      Comp10
+BN_CAB_XOK~S {res}  .41785544   .42230239
+{txt}EG_ELC_ACC~S {res} -.01955582    .0801641
+{txt}EN_ATM_CO2~C {res}  .72208926  -.28830538
+{txt}IT_NET_USE~S {res} -.44371202  -.25557742
+{txt}NE_CON_GOV~S {res}  .02298588   .08094941
+{txt}NE_GDI_TOT~S {res} -.04889421    .2339857
+{txt}NY_GDP_MKT~D {res} -.07443673  -.03756186
+{txt}NY_GDP_PCA~D {res} -.13892921   .73518594
+{txt}SP_DYN_LE0~N {res}  .04118955  -.21285835
+{txt} SP_POP_DPND {res}   -.277963  -.13518338
+{reset}
+{com}. 
+. screeplot, title("PCA" "(basado en matriz de correlaciones)", color(black)) ytitle("Autovalor") xtitle("Componente") yline(1, lcolor(red))
+{res}{txt}
+{com}. 
+. matrix define   prop_cor = J(`cols',2,.)
+{txt}
+{com}. matrix rownames prop_cor = "Comp1" "Comp2" "Comp3" "Comp4" "Comp5" "Comp6" "Comp7" "Comp8" "Comp9" "Comp10"
+{txt}
+{com}. matrix colnames prop_cor = "comp" "prop"
+{txt}
+{com}. 
+. local traza=0
+{txt}
+{com}. forvalues i=1(1)`cols' {c -(}
+{txt}  2{com}.         local traza=`traza'+eigenvalues_cor[1,`i']
+{txt}  3{com}. {c )-}
+{txt}
+{com}. 
+. forvalues i=1(1)`cols' {c -(}
+{txt}  2{com}.         matrix prop_cor [`i',1]=`i'
+{txt}  3{com}.         matrix prop_cor [`i',2]=eigenvalues_cor[1,`i']/`traza'
+{txt}  4{com}. {c )-}
+{txt}
+{com}. 
+. matrix list prop_cor
+{res}
+{txt}prop_cor[10,2]
+             comp       prop
+ Comp1 {res}         1   .5154834
+{txt} Comp2 {res}         2  .16934278
+{txt} Comp3 {res}         3  .09800388
+{txt} Comp4 {res}         4  .07129892
+{txt} Comp5 {res}         5    .058846
+{txt} Comp6 {res}         6  .03720406
+{txt} Comp7 {res}         7  .02271118
+{txt} Comp8 {res}         8  .01467892
+{txt} Comp9 {res}         9  .00950439
+{txt}Comp10 {res}        10  .00292649
+{reset}
+{com}. 
+. preserve
+{txt}
+{com}. drop _all
+{txt}
+{com}. svmat prop_cor, names(col)
+{txt}number of observations will be reset to 10
+Press any key to continue, or Break to abort
+{p}
+Number of observations ({bf:_N}) was 0,
+now 10.
+{p_end}
+
+{com}. generate prop_acum=sum(prop)
+{txt}
+{com}. graph bar prop, over(comp) bargap(100) blabel(bar, format(%5.3g)) ///
+>                                 ylabel(0.1 "10%" 0.2 "20%" 0.3 "30%" 0.4 "40%" 0.5 "50%" 0.6 "60%") ///
+>                                 title("Porcentaje de varianza explicada por cada componente" "(basado en matriz de correlaciones)", color(black)) ytitle("")
+{res}{txt}
+{com}. graph bar prop_acum, over(comp) bargap(100) blabel(bar, format(%5.3g)) ///
+>                                          ylabel(0.1 "10%" 0.2 "20%" 0.3 "30%" 0.4 "40%" 0.5 "50%" 0.6 "60%" 0.7 "70%" 0.8 "80%" 0.9 "90%" 1.0 "100%") ///
+>                                          title("Porcentaje acumulado de varianza explicada por cada componente" "(basado en matriz de correlaciones)", color(black)) ytitle("")
+{res}{txt}
+{com}. restore
+{txt}
+{com}. 
+. 
+. *##############################################################################*
+.                                                                 * EJERCICIO 5 *
+. *##############################################################################*
+. 
+. 
+. local components=2
+{txt}
+{com}. pca `vars', components(`components') correlation
+
+{txt}Principal components/correlation{col 50}Number of obs    = {res}        20
+{col 50}{txt}Number of comp.  = {res}         2
+{col 50}{txt}Trace            {col 67}=  {res}       10
+{col 5}{txt}Rotation: (unrotated = principal){col 50}Rho              = {res}    0.6848
+
+{txt}{col 5}{hline 13}{c TT}{hline 60}
+{col 5}   Component {c |}   Eigenvalue   Difference         Proportion   Cumulative
+{col 5}{hline 13}{c +}{hline 60}
+{col 5}{ralign 12:Comp1} {c |}{res}      5.15483      3.46141             0.5155       0.5155
+{txt}{col 5}{ralign 12:Comp2} {c |}{res}      1.69343      .713389             0.1693       0.6848
+{txt}{col 5}{ralign 12:Comp3} {c |}{res}      .980039       .26705             0.0980       0.7828
+{txt}{col 5}{ralign 12:Comp4} {c |}{res}      .712989      .124529             0.0713       0.8541
+{txt}{col 5}{ralign 12:Comp5} {c |}{res}       .58846      .216419             0.0588       0.9130
+{txt}{col 5}{ralign 12:Comp6} {c |}{res}      .372041      .144929             0.0372       0.9502
+{txt}{col 5}{ralign 12:Comp7} {c |}{res}      .227112     .0803226             0.0227       0.9729
+{txt}{col 5}{ralign 12:Comp8} {c |}{res}      .146789     .0517453             0.0147       0.9876
+{txt}{col 5}{ralign 12:Comp9} {c |}{res}     .0950439      .065779             0.0095       0.9971
+{txt}{col 5}{ralign 12:Comp10} {c |}{res}     .0292649            .             0.0029       1.0000
+{txt}{col 5}{hline 13}{c BT}{hline 60}
+
+Principal components (eigenvectors) 
+
+{space 4}{hline 13}{c  TT}{hline 10}{hline 10}{c  TT}{hline 13}
+{space 4}{space 0}{ralign 12:Variable}{space 1}{c |}{space 1}{ralign 8:Comp1}{space 1}{space 1}{ralign 8:Comp2}{space 1}{c |}{space 1}{ralign 11:Unexplained}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{hline 10}{c   +}{hline 13}
+{space 4}{space 0}{ralign 12:BN_CAB_XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3457}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3523}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .1738}}}{space 1}
+{space 4}{space 0}{ralign 12:EG_ELC_ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2670}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4609}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .2729}}}{space 1}
+{space 4}{space 0}{ralign 12:EN_ATM_CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3883}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1899}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .1617}}}{space 1}
+{space 4}{space 0}{ralign 12:IT_NET_USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.4058}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0823}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .1397}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_CON_GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2240}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4265}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .4334}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_GDI_TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2350}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.4485}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .3747}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0675}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4278}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .6666}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3896}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1321}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .1878}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_DYN_LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3120}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1898}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .4373}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_POP_DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3670}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0337}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .3039}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{hline 10}{c  BT}{hline 13}
+
+{com}. predict u1-u`components'
+{txt}({bf:score} assumed)
+
+Scoring coefficients 
+{col 5}sum of squares(column-loading) = 1
+
+{space 4}{hline 13}{c  TT}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:Variable}{space 1}{c |}{space 1}{ralign 8:Comp1}{space 1}{space 1}{ralign 8:Comp2}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:BN_CAB_XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3457}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3523}}}{space 1}
+{space 4}{space 0}{ralign 12:EG_ELC_ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2670}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4609}}}{space 1}
+{space 4}{space 0}{ralign 12:EN_ATM_CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3883}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1899}}}{space 1}
+{space 4}{space 0}{ralign 12:IT_NET_USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.4058}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0823}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_CON_GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2240}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4265}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_GDI_TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2350}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.4485}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0675}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4278}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3896}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1321}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_DYN_LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3120}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1898}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_POP_DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3670}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0337}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{hline 10}
+
+{com}. correlate `vars' u1-u`components'
+{txt}(obs=20)
+
+             {c |} BN_CAB~S EG_ELC~S EN_ATM~C IT_NET~S NE_CON~S NE_GDI~S NY~TP_KD NY~AP_KD SP_DYN~N SP_POP~D       u1
+{hline 13}{c +}{hline 99}
+BN_CAB_XOK~S {c |}{res}   1.0000
+{txt}EG_ELC_ACC~S {c |}{res}  -0.1950   1.0000
+{txt}EN_ATM_CO2~C {c |}{res}  -0.7962   0.3951   1.0000
+{txt}IT_NET_USE~S {c |}{res}  -0.5956   0.6103   0.7934   1.0000
+{txt}NE_CON_GOV~S {c |}{res}  -0.2527   0.6374   0.2380   0.4152   1.0000
+{txt}NE_GDI_TOT~S {c |}{res}  -0.5910   0.0026   0.5231   0.4208   0.0761   1.0000
+{txt}NY_GDP_MKT~D {c |}{res}   0.1107   0.1704   0.1029   0.2384   0.1764  -0.2198   1.0000
+{txt}NY_GDP_PCA~D {c |}{res}  -0.7965   0.4003   0.9047   0.8191   0.2073   0.3676   0.1280   1.0000
+{txt}SP_DYN_LE0~N {c |}{res}  -0.2924   0.5713   0.4692   0.6818   0.3750   0.2958   0.0812   0.5761   1.0000
+ {txt}SP_POP_DPND {c |}{res}   0.6646  -0.4136  -0.6228  -0.7337  -0.5030  -0.4354  -0.1998  -0.6318  -0.5459   1.0000
+          {txt}u1 {c |}{res}  -0.7849   0.6062   0.8816   0.9213   0.5085   0.5336   0.1532   0.8847   0.7083  -0.8332   1.0000
+          {txt}u2 {c |}{res}   0.4584   0.5997  -0.2471   0.1071   0.5550  -0.5836   0.5567  -0.1719   0.2469  -0.0439   0.0000
+
+             {txt}{c |}       u2
+{hline 13}{c +}{hline 9}
+          u2 {c |}{res}   1.0000
+
+{txt}
+{com}. 
+. 
+. *##############################################################################*
+.                                                                 * EJERCICIO 6 *
+. *##############################################################################*
+. 
+. 
+. summarize u1-u`components'
+
+{txt}    Variable {c |}        Obs        Mean    Std. dev.       Min        Max
+{hline 13}{c +}{hline 57}
+{space 10}u1 {c |}{res}         20   -2.79e-09    2.270426  -4.727859   4.852673
+{txt}{space 10}u2 {c |}{res}         20   -2.05e-09    1.301318  -3.391772   2.605042
+{txt}
+{com}. summarize u1-u`components', detail
+
+                   {txt}Scores for component 1
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}-4.727859      -4.727859
+{txt} 5%    {res}-3.682592      -2.637325
+{txt}10%    {res}-2.368377       -2.09943       {txt}Obs         {res}         20
+{txt}25%    {res}-1.382419      -2.093045       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res}-.1675797                      {txt}Mean          {res}-2.79e-09
+                        {txt}Largest       Std. dev.     {res} 2.270426
+{txt}75%    {res}  1.08631       1.302309
+{txt}90%    {res} 3.427007        2.32834       {txt}Variance      {res} 5.154834
+{txt}95%    {res} 4.689173       4.525674       {txt}Skewness      {res} .3488936
+{txt}99%    {res} 4.852673       4.852673       {txt}Kurtosis      {res} 3.349865
+
+                   {txt}Scores for component 2
+{hline 61}
+      Percentiles      Smallest
+ 1%    {res}-3.391772      -3.391772
+{txt} 5%    {res}-2.814482      -2.237192
+{txt}10%    {res}-2.162097      -2.087002       {txt}Obs         {res}         20
+{txt}25%    {res}-.0837795      -.5527226       {txt}Sum of wgt. {res}         20
+
+{txt}50%    {res} .2018057                      {txt}Mean          {res}-2.05e-09
+                        {txt}Largest       Std. dev.     {res} 1.301318
+{txt}75%    {res} .6475806       .9231878
+{txt}90%    {res} .9760195       .9294568       {txt}Variance      {res} 1.693428
+{txt}95%    {res} 1.813812       1.022582       {txt}Skewness      {res}-.9398758
+{txt}99%    {res} 2.605042       2.605042       {txt}Kurtosis      {res} 4.357151
+{txt}
+{com}. tabstat u1-u`components', statistics(mean variance cv)
+
+{txt}   Stats {...}
+{c |}{...}
+        u1        u2
+{hline 9}{c +}{hline 20}
+{ralign 8:Mean} {...}
+{c |}{...}
+ {res}-2.79e-09 -2.05e-09
+{txt}{ralign 8:Variance} {...}
+{c |}{...}
+ {res} 5.154834  1.693428
+{txt}{ralign 8:CV} {...}
+{c |}{...}
+ {res}-8.13e+08 -6.35e+08
+{txt}{hline 9}{c BT}{hline 20}
+
+{com}. 
+. 
+. *##############################################################################*
+.                                                                 * EJERCICIO 7 *
+. *##############################################################################*
+. 
+. 
+. biplot `vars',  dim(2 1) std alpha(0.5) ynegate autoaspect table ///
+>                                 rowopts(msize(tiny) mlabel(country) mlabsize(tiny)) ///
+>                                 colopts(mcolor(green) lcolor(green) mlabsize(tiny) mlabcolor(green)) ///
+>                                 title("Biplot sobre matriz de datos (c = 0.5)" "(basado en matriz de correlaciones)", color(black)) ytitle("Dimensión 2") xtitle("Dimensión 1") ///
+>                                 yline(0, lcolor(red)) xline(0, lcolor(red))
+{res}
+{txt}Biplot of {res:20} observations and {res:10} variables
+
+    Explained variance by component 1 ={res} 0.5155
+{txt}    Explained variance by component 2 ={res} 0.1693
+{txt}             Total explained variance ={res} 0.6848
+
+{txt}Biplot coordinates
+{res}
+{txt}{space 4}{space 0}{ralign 12:Observations}{space 1}{c |}{space 1}{ralign 8:dim1}{space 1}{space 1}{ralign 8:dim2}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:Antigua an~a}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  1.5425}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.9393}}}{space 1}
+{space 4}{space 0}{ralign 12:Argentina}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2923}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4294}}}{space 1}
+{space 4}{space 0}{ralign 12:Bahamas, The}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  1.4386}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.8763}}}{space 1}
+{space 4}{space 0}{ralign 12:Belize}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.0931}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0165}}}{space 1}
+{space 4}{space 0}{ralign 12:Bolivia}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.5361}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1990}}}{space 1}
+{space 4}{space 0}{ralign 12:Brazil}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.4140}}}{space 1}{space 1}{ralign 8:{res:{sf:  1.0938}}}{space 1}
+{space 4}{space 0}{ralign 12:Chile}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.7401}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0902}}}{space 1}
+{space 4}{space 0}{ralign 12:Colombia}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.1581}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2814}}}{space 1}
+{space 4}{space 0}{ralign 12:Costa Rica}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3983}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3876}}}{space 1}
+{space 4}{space 0}{ralign 12:Dominican ~c}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0459}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2321}}}{space 1}
+{space 4}{space 0}{ralign 12:Ecuador}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.1268}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1272}}}{space 1}
+{space 4}{space 0}{ralign 12:El Salvador}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3428}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3903}}}{space 1}
+{space 4}{space 0}{ralign 12:Guatemala}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.8383}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0190}}}{space 1}
+{space 4}{space 0}{ralign 12:Haiti}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -1.5029}}}{space 1}{space 1}{ralign 8:{res:{sf: -1.4241}}}{space 1}
+{space 4}{space 0}{ralign 12:Honduras}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.6653}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0084}}}{space 1}
+{space 4}{space 0}{ralign 12:Jamaica}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2428}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0793}}}{space 1}
+{space 4}{space 0}{ralign 12:Mexico}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.0134}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2624}}}{space 1}
+{space 4}{space 0}{ralign 12:Nicaragua}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.6674}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0538}}}{space 1}
+{space 4}{space 0}{ralign 12:Paraguay}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.2600}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0123}}}{space 1}
+{space 4}{space 0}{ralign 12:Peru}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.2265}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1866}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{hline 10}
+{res}
+{txt}{space 4}{space 0}{ralign 12:Variables}{space 1}{c |}{space 1}{ralign 8:dim1}{space 1}{space 1}{ralign 8:dim2}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:BN_CAB_XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -1.0876}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.8390}}}{space 1}
+{space 4}{space 0}{ralign 12:EG_ELC_ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.8399}}}{space 1}{space 1}{ralign 8:{res:{sf:  1.0976}}}{space 1}
+{space 4}{space 0}{ralign 12:EN_ATM_CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  1.2215}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.4523}}}{space 1}
+{space 4}{space 0}{ralign 12:IT_NET_USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  1.2766}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1959}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_CON_GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.7046}}}{space 1}{space 1}{ralign 8:{res:{sf:  1.0158}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_GDI_TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.7393}}}{space 1}{space 1}{ralign 8:{res:{sf: -1.0681}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2123}}}{space 1}{space 1}{ralign 8:{res:{sf:  1.0189}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  1.2258}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.3146}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_DYN_LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.9815}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4520}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_POP_DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -1.1544}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0804}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{hline 10}
+
+
+{com}. 
+. 
+. *##############################################################################*
+.                                                                 * EJERCICIO 8 *
+. *##############################################################################*
+. 
+. 
+. preserve
+{txt}
+{com}. 
+. drop _all
+{txt}
+{com}. 
+. svmat C, names(col)
+{txt}number of observations will be reset to 10
+Press any key to continue, or Break to abort
+{p}
+Number of observations ({bf:_N}) was 0,
+now 10.
+{p_end}
+
+{com}. 
+. generate variable=""
+{txt}(10 missing values generated)
+
+{com}. forvalues i=1(1)`cols' {c -(}
+{txt}  2{com}.         local name: word `i' of `vars'
+{txt}  3{com}.         replace variable="`name'" in `i'
+{txt}  4{com}. {c )-}
+{txt}variable {bf}{res}variable{sf}{txt} was {bf}{res}str1{sf}{txt} now {bf}{res}str17{sf}
+{txt}(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+(1 real change made)
+
+{com}. 
+. order variable
+{txt}
+{com}. 
+. pca `vars', components(`components') correlation
+
+{txt}Principal components/correlation{col 50}Number of obs    = {res}        10
+{col 50}{txt}Number of comp.  = {res}         2
+{col 50}{txt}Trace            {col 67}=  {res}       10
+{col 5}{txt}Rotation: (unrotated = principal){col 50}Rho              = {res}    0.8854
+
+{txt}{col 5}{hline 13}{c TT}{hline 60}
+{col 5}   Component {c |}   Eigenvalue   Difference         Proportion   Cumulative
+{col 5}{hline 13}{c +}{hline 60}
+{col 5}{ralign 12:Comp1} {c |}{res}       7.3785      5.90276             0.7379       0.7379
+{txt}{col 5}{ralign 12:Comp2} {c |}{res}      1.47575      .768394             0.1476       0.8854
+{txt}{col 5}{ralign 12:Comp3} {c |}{res}      .707353      .468913             0.0707       0.9562
+{txt}{col 5}{ralign 12:Comp4} {c |}{res}       .23844     .0947265             0.0238       0.9800
+{txt}{col 5}{ralign 12:Comp5} {c |}{res}      .143713      .103343             0.0144       0.9944
+{txt}{col 5}{ralign 12:Comp6} {c |}{res}     .0403707     .0295265             0.0040       0.9984
+{txt}{col 5}{ralign 12:Comp7} {c |}{res}     .0108442     .0075992             0.0011       0.9995
+{txt}{col 5}{ralign 12:Comp8} {c |}{res}    .00324501    .00146141             0.0003       0.9998
+{txt}{col 5}{ralign 12:Comp9} {c |}{res}     .0017836     .0017836             0.0002       1.0000
+{txt}{col 5}{ralign 12:Comp10} {c |}{res}            0            .             0.0000       1.0000
+{txt}{col 5}{hline 13}{c BT}{hline 60}
+
+Principal components (eigenvectors) 
+
+{space 4}{hline 13}{c  TT}{hline 10}{hline 10}{c  TT}{hline 13}
+{space 4}{space 0}{ralign 12:Variable}{space 1}{c |}{space 1}{ralign 8:Comp1}{space 1}{space 1}{ralign 8:Comp2}{space 1}{c |}{space 1}{ralign 11:Unexplained}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{hline 10}{c   +}{hline 13}
+{space 4}{space 0}{ralign 12:BN_CAB_XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3475}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2165}}}{space 1}{c |}{space 1}{center 11:{res:{sf:     .04005}}}{space 1}
+{space 4}{space 0}{ralign 12:EG_ELC_ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2986}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3502}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .1611}}}{space 1}
+{space 4}{space 0}{ralign 12:EN_ATM_CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3533}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1431}}}{space 1}{c |}{space 1}{center 11:{res:{sf:     .04857}}}{space 1}
+{space 4}{space 0}{ralign 12:IT_NET_USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3648}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0264}}}{space 1}{c |}{space 1}{center 11:{res:{sf:     .01689}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_CON_GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2730}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3800}}}{space 1}{c |}{space 1}{center 11:{res:{sf:       .237}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_GDI_TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2871}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.4517}}}{space 1}{c |}{space 1}{center 11:{res:{sf:     .09056}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0414}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.6668}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .3312}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3541}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0935}}}{space 1}{c |}{space 1}{center 11:{res:{sf:     .06194}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_DYN_LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3407}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0635}}}{space 1}{c |}{space 1}{center 11:{res:{sf:      .1378}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_POP_DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3634}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0590}}}{space 1}{c |}{space 1}{center 11:{res:{sf:     .02063}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{hline 10}{c  BT}{hline 13}
+
+{com}. predict u1-u`components'
+{txt}({bf:score} assumed)
+
+Scoring coefficients 
+{col 5}sum of squares(column-loading) = 1
+
+{space 4}{hline 13}{c  TT}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:Variable}{space 1}{c |}{space 1}{ralign 8:Comp1}{space 1}{space 1}{ralign 8:Comp2}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:BN_CAB_XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3475}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.2165}}}{space 1}
+{space 4}{space 0}{ralign 12:EG_ELC_ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2986}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3502}}}{space 1}
+{space 4}{space 0}{ralign 12:EN_ATM_CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3533}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1431}}}{space 1}
+{space 4}{space 0}{ralign 12:IT_NET_USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3648}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0264}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_CON_GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2730}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.3800}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_GDI_TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2871}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.4517}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.0414}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.6668}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3541}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0935}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_DYN_LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3407}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0635}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_POP_DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3634}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.0590}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{hline 10}
+
+{com}. 
+. biplot `vars',  dim(2 1) std alpha(0.5) xnegate autoaspect table ///
+>                                 rowopts(msize(tiny) mlabel(variable) mlabsize(tiny)) ///
+>                                 colopts(mcolor(green) lcolor(green) mlabsize(tiny) mlabcolor(green)) ///
+>                                 title("Biplot sobre matriz de correlaciones (c = 0.5)", color(black)) ytitle("Dimensión 2") xtitle("Dimensión 1") ///
+>                                 yline(0, lcolor(red)) xline(0, lcolor(red))
+{res}
+{txt}Biplot of {res:10} observations and {res:10} variables
+
+    Explained variance by component 1 ={res} 0.7379
+{txt}    Explained variance by component 2 ={res} 0.1476
+{txt}             Total explained variance ={res} 0.8854
+
+{txt}Biplot coordinates
+{res}
+{txt}{space 4}{space 0}{ralign 12:Observations}{space 1}{c |}{space 1}{ralign 8:dim1}{space 1}{space 1}{ralign 8:dim2}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:BN CAB XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -1.6393}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1927}}}{space 1}
+{space 4}{space 0}{ralign 12:EG ELC ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.4272}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.5717}}}{space 1}
+{space 4}{space 0}{ralign 12:EN ATM CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.7019}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.4240}}}{space 1}
+{space 4}{space 0}{ralign 12:IT NET USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.8026}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0403}}}{space 1}
+{space 4}{space 0}{ralign 12:NE CON GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.3026}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.5670}}}{space 1}
+{space 4}{space 0}{ralign 12:NE GDI TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.2410}}}{space 1}{space 1}{ralign 8:{res:{sf: -1.1328}}}{space 1}
+{space 4}{space 0}{ralign 12:NY GDP MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.3205}}}{space 1}{space 1}{ralign 8:{res:{sf:  1.0393}}}{space 1}
+{space 4}{space 0}{ralign 12:NY GDP PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.6997}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.3202}}}{space 1}
+{space 4}{space 0}{ralign 12:SP DYN LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.5461}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0237}}}{space 1}
+{space 4}{space 0}{ralign 12:SP POP DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -1.7613}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.5578}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{hline 10}
+{res}
+{txt}{space 4}{space 0}{ralign 12:Variables}{space 1}{c |}{space 1}{ralign 8:dim1}{space 1}{space 1}{ralign 8:dim2}{space 1}
+{space 4}{hline 13}{c   +}{hline 10}{hline 10}
+{space 4}{space 0}{ralign 12:BN_CAB_XOK~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -0.9919}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.4133}}}{space 1}
+{space 4}{space 0}{ralign 12:EG_ELC_ACC~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.8524}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.6685}}}{space 1}
+{space 4}{space 0}{ralign 12:EN_ATM_CO2~C}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  1.0087}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.2732}}}{space 1}
+{space 4}{space 0}{ralign 12:IT_NET_USE~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  1.0415}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.0503}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_CON_GOV~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.7793}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.7255}}}{space 1}
+{space 4}{space 0}{ralign 12:NE_GDI_TOT~S}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.8197}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.8623}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_MKT~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.1182}}}{space 1}{space 1}{ralign 8:{res:{sf:  1.2730}}}{space 1}
+{space 4}{space 0}{ralign 12:NY_GDP_PCA~D}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  1.0108}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1784}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_DYN_LE0~N}{space 1}{c |}{space 1}{ralign 8:{res:{sf:  0.9724}}}{space 1}{space 1}{ralign 8:{res:{sf:  0.1212}}}{space 1}
+{space 4}{space 0}{ralign 12:SP_POP_DPND}{space 1}{c |}{space 1}{ralign 8:{res:{sf: -1.0373}}}{space 1}{space 1}{ralign 8:{res:{sf: -0.1126}}}{space 1}
+{space 4}{hline 13}{c  BT}{hline 10}{hline 10}
+
+
+{com}. 
+. restore
+{txt}
+{com}. 
+. 
+. *##############################################################################*
+.                                                         * EJERCICIOS 9, 10, 11 y 12 *
+. *##############################################################################*
+. 
+. 
+. quietly include "kmedtest"
+{txt}
+{com}. 
+. local vars_clusters="u2 u1"
+{txt}
+{com}. 
+. forvalues i=1(1)5 {c -(}
+{txt}  2{com}.         kmedtest `vars_clusters', k(`i')
+{txt}  3{com}. {c )-}
+{txt}cluster name: {res}_clus_1
+{txt}cluster name: {res}_clus_2
+**********TEST************
+{txt}Estadistico = 8.130953130702631       
+P-value = .0012193000013231            
+{res}**************************
+{txt}cluster name: {res}_clus_3
+{txt}cluster name: {res}_clus_4
+**********TEST************
+{txt}Estadistico = .0293127396710359       
+P-value = .9711372252739827            
+{res}**************************
+{txt}cluster name: {res}_clus_5
+{txt}cluster name: {res}_clus_6
+**********TEST************
+{txt}Estadistico = 6.665933793506314       
+P-value = .0038013851036742            
+{res}**************************
+{txt}cluster name: {res}_clus_7
+{txt}cluster name: {res}_clus_8
+**********TEST************
+{txt}Estadistico = 4.926032980805281       
+P-value = .0141272039077749            
+{res}**************************
+{txt}cluster name: {res}_clus_9
+{txt}cluster name: {res}_clus_10
+**********TEST************
+{txt}Estadistico = 1.856694513613127       
+P-value = .1749102530079438            
+{res}**************************
+{txt}
+{com}. local groups=2
+{txt}
+{com}. 
+. set seed 10
+{txt}
+{com}. cluster kmeans `vars_clusters', k(`groups') generate(group)
+{txt}cluster name: {res}_clus_11
+{txt}
+{com}. graph twoway (scatter `vars_clusters' if (group==1)) (scatter `vars_clusters' if (group==2)), ///
+>                                                                                                          title("Análisis de clusters con algoritmo k-medias", color(black)) ytitle("Componente 2") xtitle("Componente 1") ///
+>                                                                                                          legend(label(1 "Grupo 1") label(2 "Grupo 2"))
+{res}{txt}
+{com}. 
+. local metodos="singlelinkage averagelinkage"
+{txt}
+{com}. foreach met of local metodos {c -(}
+{txt}  2{com}.         cluster `met' `vars_clusters', name(cluster_`met')
+{txt}  3{com}.         cluster stop cluster_`met'
+{txt}  4{com}.         cluster generate cluster_`met'=group(`groups'), name(cluster_`met')
+{txt}  5{com}.         cluster dendrogram cluster_`met', title("Dendrograma para análisis de clusters con método jerárquico `met'", color(black))
+{txt}  6{com}. {c )-}
+
+{txt}{c TLC}{hline 13}{c TT}{hline 13}{c TRC}
+{c |}             {c |}  Calinski/  {c |}
+{c |}  Number of  {c |}  Harabasz   {c |}
+{c |}  clusters   {c |}  pseudo-F   {c |}
+{c LT}{hline 13}{c +}{hline 13}{c RT}
+{c |} {res}{center 11:{ralign 2:2}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:6.79}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:3}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:20.48}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:4}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:17.34}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:5}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:17.64}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:6}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:37.79}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:7}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:33.32}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:8}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:28.03}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:9}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:28.52}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:10}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:25.40}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:11}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:58.53}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:12}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:52.78}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:13}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:86.02}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:14}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:98.84}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:15}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:130.46}}{txt}{col 29}{c |}
+{c BLC}{hline 13}{c BT}{hline 13}{c BRC}
+{res}
+{txt}{c TLC}{hline 13}{c TT}{hline 13}{c TRC}
+{c |}             {c |}  Calinski/  {c |}
+{c |}  Number of  {c |}  Harabasz   {c |}
+{c |}  clusters   {c |}  pseudo-F   {c |}
+{c LT}{hline 13}{c +}{hline 13}{c RT}
+{c |} {res}{center 11:{ralign 2:2}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:6.79}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:3}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:20.48}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:4}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:21.16}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:5}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:17.64}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:6}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:38.71}}{txt}{col 29}{c |}
+{c |} {res}{center 11:{ralign 2:7}}{txt}{col 15}{c |} {res}{center 11:{ralign 6:57.90}}{txt}{col 29}{c |}
+{err}{hline 2}Break{hline 2}
+{txt}{search r(1), local:r(1);}
+
+end of do-file
+
+{err}{hline 2}Break{hline 2}
+{txt}{search r(1), local:r(1);}
+
+{com}. do "G:\Mi unidad\JM\Facultad de Ciencias Económicas (FCE)\Maestría en Econometría\5. Econometría\Trabajo Final\Datos\Trabajo Final.do"
+{txt}
+{com}. clear all
+{res}{txt}
+{com}. set more off
+{txt}
+{com}. 
+. *local disco="C:/"
+. local disco="G:/Mi unidad"
+{txt}
+{com}. cd "`disco'/JM/Facultad de Ciencias Económicas (FCE)/Maestría en Econometría/5. Econometría/Trabajo Final/Datos"
+{res}G:\Mi unidad\JM\Facultad de Ciencias Económicas (FCE)\Maestría en Econometría\5. Econometría\Trabajo Final\Datos
+{txt}
+{com}. 
+. 
+. capture log close
+{smcl}
+{com}{sf}{ul off}
