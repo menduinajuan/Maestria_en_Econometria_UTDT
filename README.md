@@ -21,6 +21,7 @@ Este repositorio contiene las resoluciones de los trabajos prácticos, el materi
 - `10. Microeconometría II`: Contiene las resoluciones de los trabajos prácticos, el material teórico y el examen de la materia "Microeconometría II".
 - `11. Big Data, Machine Learning and Econometrics`: Contiene el material teórico y el trabajo final de la materia "Big Data, Machine Learning and Econometrics".
 - `12. Macroeconometría`: Contiene el material teórico y el trabajo final de la materia "Macroeconometría".
+- `13. Tesis`: Contiene la tesis de la carrera.
 
 ## Cómo Contribuir
 
