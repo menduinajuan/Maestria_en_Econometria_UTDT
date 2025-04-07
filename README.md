@@ -26,7 +26,7 @@ Este repositorio contiene las resoluciones de los trabajos prácticos, el materi
 ## Cómo Contribuir
 
 1. Darle Star (estrella) al repositorio.
-2. Seguirme en GitHub.
+2. Seguirme en GitHub/GitLab.
 3. Hacer un fork del repositorio.
 
 ## Contacto
