@@ -1,5 +1,6 @@
 clear all
 set more off
+version 17
 
 *local disco="C:/"
 local disco="G:/Mi unidad"
