@@ -1,0 +1,32 @@
+symbol,coingecko_id,yahoo_ticker,categoria,motivo,ath_usd_documentado,ath_date_documentado,fuente,yahoo_disponible,yahoo_desde,yahoo_hasta,yahoo_velas
+BTC,bitcoin,BTC-USD,mayor_actual,top por market cap actual (CoinGecko),126080.0,2025-10-06,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2014-09-17,2026-08-11,4347
+ETH,ethereum,ETH-USD,mayor_actual,top por market cap actual (CoinGecko),4946.05,2025-08-24,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+BNB,binancecoin,BNB-USD,mayor_actual,top por market cap actual (CoinGecko),1369.99,2025-10-13,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+XRP,ripple,XRP-USD,mayor_actual,top por market cap actual (CoinGecko),3.65,2025-07-17,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+SOL,solana,SOL-USD,mayor_actual,top por market cap actual (CoinGecko),293.31,2025-01-19,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2020-04-10,2026-08-11,2315
+TRX,tron,TRX-USD,mayor_actual,top por market cap actual (CoinGecko),0.431288,2024-12-03,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+DOGE,dogecoin,DOGE-USD,mayor_actual,top por market cap actual (CoinGecko),0.731578,2021-05-07,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+ZEC,zcash,ZEC-USD,mayor_actual,top por market cap actual (CoinGecko),3191.93,2016-10-28,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+XMR,monero,XMR-USD,mayor_actual,top por market cap actual (CoinGecko),797.73,2026-01-14,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+ADA,cardano,ADA-USD,mayor_actual,top por market cap actual (CoinGecko),3.09,2021-09-01,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+LINK,chainlink,LINK-USD,mayor_actual,top por market cap actual (CoinGecko),52.7,2021-05-09,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+XLM,stellar,XLM-USD,mayor_actual,top por market cap actual (CoinGecko),0.875563,2018-01-02,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+BCH,bitcoin-cash,BCH-USD,mayor_actual,top por market cap actual (CoinGecko),3785.82,2017-12-19,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+TON,the-open-network,TON-USD,mayor_actual,top por market cap actual (CoinGecko),8.25,2024-06-14,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2020-08-29,2026-08-11,2174
+LTC,litecoin,LTC-USD,mayor_actual,top por market cap actual (CoinGecko),410.26,2021-05-09,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2014-09-17,2026-08-11,4347
+HBAR,hedera-hashgraph,HBAR-USD,mayor_actual,top por market cap actual (CoinGecko),0.569229,2021-09-15,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2019-09-17,2026-08-11,2521
+SUI,sui,SUI20947-USD,mayor_actual,top por market cap actual (CoinGecko),5.35,2025-01-04,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2023-05-03,2026-08-11,1197
+AVAX,avalanche-2,AVAX-USD,mayor_actual,top por market cap actual (CoinGecko),144.96,2021-11-21,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2020-07-13,2026-08-11,2152
+SHIB,shiba-inu,SHIB-USD,mayor_actual,top por market cap actual (CoinGecko),8.616e-05,2021-10-27,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2020-08-01,2026-08-11,2161
+UNI,uniswap,UNI7083-USD,mayor_actual,top por market cap actual (CoinGecko),44.92,2021-05-02,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2020-09-18,2026-08-11,2154
+DOT,polkadot,DOT-USD,mayor_actual,top por market cap actual (CoinGecko),54.98,2021-11-04,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2020-08-20,2026-08-11,2183
+ICP,internet-computer,ICP-USD,mayor_actual,top por market cap actual (CoinGecko),700.65,2021-05-10,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2021-05-10,2026-08-11,1920
+NEAR,near,NEAR-USD,mayor_actual,top por market cap actual (CoinGecko),20.44,2022-01-16,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2020-10-14,2026-08-11,2128
+ETC,ethereum-classic,ETC-USD,mayor_actual,top por market cap actual (CoinGecko),167.09,2021-05-06,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2017-11-09,2026-08-11,3198
+ALGO,algorand,ALGO-USD,mayor_actual,top por market cap actual (CoinGecko),3.56,2019-06-20,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2019-06-21,2026-08-11,2609
+ATOM,cosmos,ATOM-USD,mayor_actual,top por market cap actual (CoinGecko),43.84,2021-09-19,"CoinGecko /coins/markets, snapshot 2026-08-11",True,2019-03-14,2026-08-11,2708
+LUNA1,terra-luna,LUNA1-USD,colapso_historico,"Terra/LUNA Classic: colapso de UST y LUNA, mayo 2022",119.18,2022-04-05,busqueda web (ver METODOLOGIA.md),True,2019-07-26,2022-10-09,1172
+FTT,ftx-token,FTT-USD,colapso_historico,"FTX Token: colapso de FTX, noviembre 2022",84.7,2021-09-09,busqueda web (ver METODOLOGIA.md),True,2019-07-31,2026-08-11,2569
+CEL,celsius-degree-token,CEL-USD,colapso_historico,"Celsius Network: pausa de retiros y quiebra, junio 2022",8.02,2021-06-03,busqueda web (ver METODOLOGIA.md),True,2018-05-03,2026-08-11,2872
+XEM,nem,XEM-USD,colapso_historico,NEM: top 5 por market cap en el pico de la mania ICO 2017-2018,2.09,2018-01-04,busqueda web (ver METODOLOGIA.md),True,2017-11-09,2026-08-11,3198
+BCC,bitconnect,BCC-USD,colapso_historico,"BitConnect: esquema Ponzi, colapso enero 2018 (caso clasico de burbuja)",471.0,2017-12-18,busqueda web (ver METODOLOGIA.md),False,,,0
